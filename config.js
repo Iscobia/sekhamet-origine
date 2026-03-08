@@ -1,4 +1,4 @@
-// config.js (dans sekhamet-enveloppe/)
+// config.js (dans sekhamet-origine/)
 
 /* =========================================================
    CONFIGURATION DE L'APPLICATION
