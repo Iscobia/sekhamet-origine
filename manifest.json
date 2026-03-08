@@ -1,7 +1,7 @@
 {
   "name": "ORIGINE - Défis quotidiens et Support d'apprentissage",
   "short_name": "ORIGINE",
-  "description": "Défis quotidiens - Vers l'Alimentation Consciente",
+  "description": "Vers l'Alimentation Consciente",
   "start_url": "/sekhamet-origine/",
   "scope": "/sekhamet-origine/",
   "display": "standalone",
