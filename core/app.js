@@ -12,6 +12,9 @@ const APP_MAIN_TITLE = APP.MAIN_TITLE || "Mon Défi Quotidien";
 const APP_BROWSER_TITLE = APP.BROWSER_TITLE || `${APP_NAME} - Défi Quotidien`;
 const APP_ICON_192 = APP.ICON_192 || "./core/assets/icons/default-192.png";
 const APP_ICON_512 = APP.ICON_512 || "./core/assets/icons/default-512.png";
+const APP_SUPPORT_URL = APP.SUPPORT_URL || "#";
+const TECH_SUPPORT_EMAIL = window.TECH_SUPPORT_EMAIL || "";
+
 
 console.log("APP_ID:", APP_ID);
 console.log("APP_NAME:", APP_NAME);
@@ -96,23 +99,18 @@ function updateBackupWarningNote() {
   const note = document.getElementById('evolution-backup-warning');
   if (!note) return;
 
-  if (INSTALL_APP_NAME === 'EVOLUTION') {
-    note.textContent = `ATTENTION : tu ne sauvegardes ici que ta progression sur ${APP_NAME}. Si tu veux aussi protéger ta progression sur les autres thèmes, exporte-les depuis leurs pages respectives.`;
-    note.style.display = 'block';
-  } else {
+  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
+
+  if (allowedIds.length <= 1) {
     note.textContent = '';
     note.style.display = 'none';
+    return;
   }
+
+  note.textContent = `ATTENTION : tu ne sauvegardes ici que ta progression sur ${APP_NAME}. Si tu veux aussi protéger ta progression sur les autres thèmes, exporte-les depuis leurs pages respectives.`;
+  note.style.display = 'block';
 }
 
-
-// Helpers localStorage (pour éviter les oublis getItem/removeItem)
-function lsGet(k, fallback = null) {
-  const v = localStorage.getItem(storageKey(k));
-  return v === null ? fallback : v;
-}
-function lsSet(k, v) { localStorage.setItem(storageKey(k), v); }
-function lsRemove(k) { localStorage.removeItem(storageKey(k)); }
 
 let jourActuel = parseInt(lsGet('jour_actuel', '1'), 10) || 1;
 let jourAffiche = jourActuel;
@@ -212,7 +210,247 @@ function applyAppBranding() {
   if (dayTotalElement) {
     dayTotalElement.textContent = String(APP.TOTAL_DAYS || 0);
   }
+  const supportLink = document.getElementById("support-link");
+  if (supportLink) {
+    supportLink.href = APP_SUPPORT_URL;
+  }
 }
+
+let errorBannerInitialized = false;
+let latestTechnicalError = null;
+const technicalErrorHistory = [];
+
+function pushTechnicalError(entry) {
+  technicalErrorHistory.push(entry);
+  while (technicalErrorHistory.length > 10) {
+    technicalErrorHistory.shift();
+  }
+  latestTechnicalError = entry;
+}
+
+function buildTechnicalErrorReport() {
+  const lines = [
+    `App: ${APP_NAME}`,
+    `App ID: ${APP_ID}`,
+    `URL: ${window.location.href}`,
+    `User agent: ${navigator.userAgent}`,
+    `Date: ${new Date().toISOString()}`,
+    ''
+  ];
+
+  technicalErrorHistory.forEach((entry, index) => {
+    lines.push(`--- Erreur ${index + 1} ---`);
+    lines.push(`Type: ${entry.type}`);
+    lines.push(`Message: ${entry.message || ''}`);
+    if (entry.source) lines.push(`Source: ${entry.source}`);
+    if (entry.lineno) lines.push(`Ligne: ${entry.lineno}`);
+    if (entry.colno) lines.push(`Colonne: ${entry.colno}`);
+    if (entry.stack) lines.push(`Stack: ${entry.stack}`);
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+function showTechnicalErrorBanner(entry) {
+  pushTechnicalError(entry);
+
+  const banner = document.getElementById('error-banner');
+  const text = document.getElementById('error-banner-text');
+  const mailBtn = document.getElementById('error-banner-mail');
+  const copyBtn = document.getElementById('error-banner-copy');
+  const closeBtn = document.getElementById('error-banner-close');
+
+  if (!banner || !text || !mailBtn || !copyBtn || !closeBtn) return;
+
+  text.textContent = `Une erreur a été détectée dans ${APP_NAME}. Tu peux continuer à utiliser l’app, ou envoyer un signalement technique.`;
+
+  banner.hidden = false;
+
+  if (!errorBannerInitialized) {
+    closeBtn.addEventListener('click', () => {
+      banner.hidden = true;
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const report = buildTechnicalErrorReport();
+      try {
+        await navigator.clipboard.writeText(report);
+        copyBtn.textContent = '✅ Détails copiés';
+        setTimeout(() => {
+          copyBtn.textContent = '📋 Copier les détails';
+        }, 1500);
+      } catch (e) {
+        console.warn('Copie impossible :', e);
+      }
+    });
+
+    mailBtn.addEventListener('click', () => {
+      const report = buildTechnicalErrorReport();
+
+      if (!TECH_SUPPORT_EMAIL) {
+        alert("Aucun e-mail de support n'est configuré pour l'instant. Tu peux copier les détails puis les envoyer manuellement.");
+        return;
+      }
+
+      const subject = encodeURIComponent(`[${APP_NAME}] Signalement technique`);
+      const body = encodeURIComponent(report);
+      window.location.href = `mailto:${TECH_SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+    });
+
+    errorBannerInitialized = true;
+  }
+}
+
+function setupTechnicalErrorCapture() {
+  window.addEventListener('error', (event) => {
+    showTechnicalErrorBanner({
+      type: 'error',
+      message: event.message || 'Erreur inconnue',
+      source: event.filename || '',
+      lineno: event.lineno || '',
+      colno: event.colno || '',
+      stack: event.error?.stack || ''
+    });
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason;
+    showTechnicalErrorBanner({
+      type: 'unhandledrejection',
+      message: reason?.message || String(reason || 'Promesse rejetée'),
+      source: '',
+      lineno: '',
+      colno: '',
+      stack: reason?.stack || ''
+    });
+  });
+}
+
+
+function getNotificationAppIds() {
+  return Array.isArray(window.NOTIFICATION_APP_IDS) && window.NOTIFICATION_APP_IDS.length
+    ? window.NOTIFICATION_APP_IDS
+    : [APP_ID];
+}
+
+function appStorageKey(appId, key) {
+  return `${appId}_${key}`;
+}
+
+function appLsGet(appId, key, fallback = null) {
+  const value = localStorage.getItem(appStorageKey(appId, key));
+  return value !== null ? value : fallback;
+}
+
+function appLsSet(appId, key, value) {
+  localStorage.setItem(appStorageKey(appId, key), value);
+}
+
+function appLsRemove(appId, key) {
+  localStorage.removeItem(appStorageKey(appId, key));
+}
+
+function getDefiByDayForApp(appId, jourNumero) {
+  const defis = window.DEFIS_BY_APP?.[appId];
+  if (!Array.isArray(defis)) return null;
+  return defis.find(defi => defi.jour === jourNumero) || null;
+}
+
+function isProgressPausedForApp(appId) {
+  return appLsGet(appId, 'progress_paused', 'false') === 'true';
+}
+
+
+function buildNotificationTargetUrl(appId) {
+  const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [APP_ID];
+  const currentUrl = new URL(window.location.href);
+
+  if (allowedIds.length <= 1) {
+    currentUrl.searchParams.delete('app');
+    return currentUrl.toString();
+  }
+
+  currentUrl.searchParams.set('app', appId);
+  return currentUrl.toString();
+}
+
+
+async function showDailyWakeNotificationIfNeededForApp(appId) {
+  const appConfig = window.APP_CONFIGS?.[appId];
+  if (!appConfig) return false;
+
+  if (isProgressPausedForApp(appId)) return false;
+
+  const today = new Date().toLocaleDateString('fr-FR');
+  const lastShownKey = 'last_daily_notif_shown';
+  const lockKey = 'daily_notif_lock';
+
+  if (appLsGet(appId, lastShownKey) === today) return false;
+  if (appLsGet(appId, lockKey) === today) return false;
+  appLsSet(appId, lockKey, today);
+
+  if (!('Notification' in window)) return false;
+  if (Notification.permission !== 'granted') return false;
+
+  try {
+    const jourActuel = parseInt(appLsGet(appId, 'jour_actuel', '1'), 10) || 1;
+    const defi = getDefiByDayForApp(appId, jourActuel);
+    if (!defi) {
+      appLsRemove(appId, lockKey);
+      return false;
+    }
+
+    const notifTitle = `${appConfig.NAME} - Jour ${jourActuel} - ${defi.titre}`;
+    const notifBody = (defi.description || '').substring(0, 240);
+    const icon192 = appConfig.ICON_192 || './core/assets/icons/default-192.png';
+    const targetUrl = buildNotificationTargetUrl(appId);
+
+    const reg = await navigator.serviceWorker?.getRegistration?.();
+    if (reg?.showNotification) {
+      await reg.showNotification(notifTitle, {
+        body: notifBody,
+        icon: icon192,
+        badge: icon192,
+        tag: `${appId}-jour-${jourActuel}`,
+        requireInteraction: true,
+        data: {
+          jour: String(jourActuel),
+          url: targetUrl
+        }
+      });
+    } else {
+      new Notification(notifTitle, {
+        body: notifBody,
+        icon: icon192,
+        tag: `${appId}-jour-${jourActuel}`
+      });
+    }
+
+    appLsSet(appId, lastShownKey, today);
+    return true;
+  } catch (e) {
+    appLsRemove(appId, lockKey);
+    console.warn(`Notif wake impossible pour ${appId}:`, e);
+    return false;
+  }
+}
+
+async function showDailyWakeNotificationsForConfiguredApps() {
+  const appIds = getNotificationAppIds();
+  const results = [];
+
+  for (const appId of appIds) {
+    const sent = await showDailyWakeNotificationIfNeededForApp(appId);
+    results.push({ appId, sent });
+
+    await new Promise(resolve => setTimeout(resolve, 350));
+  }
+
+  console.log('🔔 Résultats wake multi-app:', results);
+  return results;
+}
+
 
 
 // === On attend que envol-notifications.js soit chargé :
@@ -496,6 +734,7 @@ function checkForUpdates() {
 
 document.addEventListener('DOMContentLoaded', async function() {
     console.log(`🚀 Initialisation ${APP_NAME}...`);
+      setupTechnicalErrorCapture();
       await loadInstallAppNameFromManifest();
       debugOneSignal();
     
@@ -1379,7 +1618,7 @@ function setNoteForDay(day, text) {
         genererCalendrier();
       }
 
-      showDailyWakeNotificationIfNeeded().then(ok => console.log('🔔 Notif wake envoyée ?', ok));
+      showDailyWakeNotificationsForConfiguredApps().then(results => console.log('🔔 Notifs wake envoyées ?', results));
 
 
 
@@ -1387,7 +1626,7 @@ function setNoteForDay(day, text) {
         if (document.visibilityState === 'visible') {
           console.log('👁️ [APP] Retour au premier plan -> resync jour');
           verifierEtAvancerJour();
-          showDailyWakeNotificationIfNeeded();
+          showDailyWakeNotificationsForConfiguredApps();
         }
       });
 
@@ -1537,6 +1776,9 @@ setTimeout(() => {
     } // FIn des Notification journalières au réveil de l'app
 
 window.showDailyWakeNotificationIfNeeded = showDailyWakeNotificationIfNeeded;
+window.showDailyWakeNotificationIfNeededForApp = showDailyWakeNotificationIfNeededForApp;
+window.showDailyWakeNotificationsForConfiguredApps = showDailyWakeNotificationsForConfiguredApps;
+
 
 //==========================================================
 //================== DEBOGG SECTION =========================

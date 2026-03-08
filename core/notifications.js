@@ -1,5 +1,5 @@
 // envol-notifications.js - Version corrigée pour OneSignal
-console.log('🔔 [Envol-Notifications] Chargement du module...');
+console.log('🔔 [Notifications] Chargement du module...');
 
 // Préférence utilisateur (ON/OFF) pour les rappels (indépendant de la permission navigateur)
 const APP = window.APP_CONFIG || {};
@@ -10,7 +10,7 @@ const APP_ICON_192 = APP.ICON_192 || './core/assets/icons/default-192.png';
 const APP_ICON_512 = APP.ICON_512 || APP_ICON_192;
 
 const NOTIF_PREF_KEY = `${STORAGE_PREFIX}notifications_enabled`;
-const ENABLE_ONESIGNAL = false; // passe à true quand backend prêt
+const ENABLE_ONESIGNAL = window.ENABLE_ONESIGNAL === true;
 
 function notifLsGet(key, fallback = null) {
   const value = localStorage.getItem(`${STORAGE_PREFIX}${key}`);
@@ -29,7 +29,7 @@ function isProgressPaused() {
 
 // Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🔔 [Envol-Notifications] DOM chargé, initialisation...');
+  console.log('🔔 [Notifications] DOM chargé, initialisation...');
 
    
   // ✅ Mettre à jour le toggle tout de suite (sans attendre OneSignal)
@@ -101,29 +101,33 @@ console.log('🔍 Boutons trouvés:', {
 
 
     async function initEnvolNotifications() {
-      console.log('🔔 [Envol-Notifications] Début initialisation...');
-      
+      console.log('🔔 [Notifications] Début initialisation...');
+
       try {
-        // VÉRIFICATION 1: OneSignal est-il disponible ?
+        if (!ENABLE_ONESIGNAL) {
+          console.log('🛑 [Notifications] OneSignal désactivé, notifications natives uniquement');
+          setupFallbackNotifications();
+          return;
+        }
+
         if (typeof OneSignal === 'undefined') {
-          console.warn('⚠️ [Envol-Notifications] OneSignal non disponible');
-          
-          // Fallback: utiliser la variable globale si définie
-          if (typeof window.OneSignalGlobal !== 'undefined') {
-            console.log('🔔 [Envol-Notifications] Utilisation OneSignalGlobal');
-            setupOneSignal(window.OneSignalGlobal);
+          console.warn('⚠️ [Notifications] OneSignal non disponible');
+
+          if (window.OneSignalGlobal) {
+            console.log('🔔 [Notifications] Utilisation OneSignalGlobal');
+            await setupOneSignal(window.OneSignalGlobal);
           } else {
-            console.error('❌ [Envol-Notifications] OneSignal complètement absent');
+            console.warn('⚠️ [Notifications] OneSignal absent, fallback natif');
             setupFallbackNotifications();
           }
           return;
         }
         
-        console.log('✅ [Envol-Notifications] OneSignal disponible');
+        console.log('✅ [Notifications] OneSignal disponible');
         setupOneSignal(OneSignal);
         
       } catch (error) {
-        console.error('❌ [Envol-Notifications] Erreur initialisation:', error);
+        console.error('❌ [Notifications] Erreur initialisation:', error);
         setupFallbackNotifications();
       }
     }
@@ -135,14 +139,14 @@ console.log('🔍 Boutons trouvés:', {
 // 2. Configuration OneSignal
 
       async function setupOneSignal(oneSignal) {
-        console.log('🔔 [Envol-Notifications] Configuration OneSignal...');
+        console.log('🔔 [Notifications] Configuration OneSignal...');
         
         try {
           // Vérifier si OneSignal est déjà initialisé (optionnel)
           if (oneSignal.config && oneSignal.config.appId) {
-            console.log('✅ [Envol-Notifications] OneSignal déjà initialisé avec App ID:', oneSignal.config.appId);
+            console.log('✅ [Notifications] OneSignal déjà initialisé avec App ID:', oneSignal.config.appId);
           } else {
-            console.warn('⚠️ [Envol-Notifications] OneSignal pas encore initialisé');
+            console.warn('⚠️ [Notifications] OneSignal pas encore initialisé');
             // Ne pas réinitialiser! Attendre
             await new Promise(resolve => setTimeout(resolve, 1000));
           }
@@ -177,7 +181,7 @@ console.log('🔍 Boutons trouvés:', {
 
           
         } catch (error) {
-          console.error('❌ [Envol-Notifications] Erreur configuration:', error);
+          console.error('❌ [Notifications] Erreur configuration:', error);
               // ESSAYER QUAND MÊME l'interface minimaliste
           try {
             if (typeof setupNotificationUI === 'function') {
@@ -195,13 +199,13 @@ console.log('🔍 Boutons trouvés:', {
   // 3. Configuration notifications quotidiennes
 
       async function setupDailyNotifications(oneSignal) {
-        console.log('🔔 [Envol-Notifications] Configuration notifications quotidiennes...');
+        console.log('🔔 [Notifications] Configuration notifications quotidiennes...');
         
         // Récupérer l'heure configurée
         const heureNotification = localStorage.getItem('heure_notification') || '09:00';
         const [heures, minutes] = heureNotification.split(':').map(Number);
         
-        console.log(`🔔 [Envol-Notifications] Heure configurée: ${heures}h${minutes}`);
+        console.log(`🔔 [Notifications] Heure configurée: ${heures}h${minutes}`);
         
         // Pour OneSignal, on doit créer des tags/custom data
         // Les vraies notifications programmées nécessitent le dashboard OneSignal
@@ -210,7 +214,7 @@ console.log('🔍 Boutons trouvés:', {
         await oneSignal.User.addTag('notification_time', heureNotification);
         await oneSignal.User.addTag('app_name', 'ENVOL');
         
-        console.log('✅ [Envol-Notifications] Tags configurés');
+        console.log('✅ [Notifications] Tags configurés');
       }
 
 
@@ -277,7 +281,7 @@ console.log('🔍 Boutons trouvés:', {
 
   
   async function setupNotificationUI(oneSignal) {
-    console.log('🔔 [Envol-Notifications] Configuration UI...');
+    console.log('🔔 [Notifications] Configuration UI...');
   
     // ========== MISE À JOUR INITIALE DU BOUTON ==========
      await updateToggleButton();
@@ -287,15 +291,15 @@ console.log('🔍 Boutons trouvés:', {
     const userAgent = navigator.userAgent;
     const platform = navigator.platform;
     
-    console.log('🔔 [Envol-Notifications] User Agent:', userAgent.substring(0, 80) + '...');
-    console.log('🔔 [Envol-Notifications] Platform:', platform);
+    console.log('🔔 [Notifications] User Agent:', userAgent.substring(0, 80) + '...');
+    console.log('🔔 [Notifications] Platform:', platform);
     
     const isIOS = /iPhone|iPad|iPod/i.test(platform) || 
                   /iPhone|iPad|iPod/i.test(userAgent);
     const isFirefox = /Firefox/i.test(userAgent);
     const isChrome = /Chrome/i.test(userAgent) && !/Edge|Edg/i.test(userAgent);
     
-    console.log('🔔 [Envol-Notifications] Détection:', { isIOS, isFirefox, isChrome });
+    console.log('🔔 [Notifications] Détection:', { isIOS, isFirefox, isChrome });
   
   
     
@@ -349,7 +353,7 @@ console.log('🔍 Boutons trouvés:', {
   
     
     if (toggleBtn) {
-      console.log('✅ [Envol-Notifications] Bouton toggle trouvé');  
+      console.log('✅ [Notifications] Bouton toggle trouvé');  
   
       
       updateToggleButton();
@@ -359,7 +363,7 @@ console.log('🔍 Boutons trouvés:', {
     //======= ÉCOUTE D'UNE INTERACTION AVEC LE BOUTON TOGGLE =========
     
       toggleBtn.addEventListener('click', async function() {
-        console.log('🔔 [Envol-Notifications] Clic toggle');
+        console.log('🔔 [Notifications] Clic toggle');
       
         const status = await getNotificationStatus(); 
         // status.finalStatus = ON réel (permission + pref)
@@ -462,10 +466,10 @@ console.log('🔍 Boutons trouvés:', {
   
     const allowBtn = document.getElementById('allow-notifications-btn');
     if (allowBtn) {
-      console.log('✅ [Envol-Notifications] Bouton allow trouvé');
+      console.log('✅ [Notifications] Bouton allow trouvé');
       
       allowBtn.addEventListener('click', async function() {
-        console.log('🔔 [Envol-Notifications] Clic sur autoriser notifications');
+        console.log('🔔 [Notifications] Clic sur autoriser notifications');
         
     if (isIOS) {
       alert('📱 Sur iOS, les notifications push ne fonctionnent pas quand l\'app est fermée (limitation Apple).\n\nMais tu peux recevoir des notifications quand ENVOL est ouverte !\n\nGarde un onglet ouvert pour tes rappels quotidiens 😊');
@@ -509,7 +513,7 @@ console.log('🔍 Boutons trouvés:', {
   // ========== BOUTON "TEST NOTIFICATION" ==========
   const testBtn = document.getElementById('test-notification-android-btn');
     if (testBtn) {
-      console.log('✅ [Envol-Notifications] Bouton test trouvé');
+      console.log('✅ [Notifications] Bouton test trouvé');
       
       // MARQUER le bouton comme ayant déjà un gestionnaire
       testBtn.setAttribute('data-has-handler', 'true');
@@ -642,7 +646,7 @@ console.log('🔍 Boutons trouvés:', {
   // 5. Fallback (plan B) - FONCTION SÉPARÉE !
     
     function setupFallbackNotifications() {
-    console.log('🔔 [Envol-Notifications] Utilisation fallback (notifications natives)');
+    console.log('🔔 [Notifications] Utilisation fallback (notifications natives)');
   
       // Détecter Firefox
     if (/Firefox/i.test(navigator.userAgent)) {

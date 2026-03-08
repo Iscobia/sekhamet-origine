@@ -9,8 +9,8 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Icônes pour différents appareils -->
-    <link id="app-favicon" rel="icon" href="core/assets/icons/ORIGINE-192.png">
-    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/ORIGINE-192.png">
+    <link id="app-favicon" rel="icon" href="core/assets/icons/EVOLUTION-192.png">
+    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/EVOLUTION-192.png">
     
     <!-- Styles -->
     <link rel="stylesheet" href="core/style.css">
@@ -19,60 +19,47 @@
     <title>Défis Quotidiens par Sekhamet</title>
 
     <!------------ Script de OneSignal ------------>
-    <!-- OneSignal SDK v16 -->
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    
-    <!-- Initialisation OneSignal SIMPLIFIÉE -->
-    <script>
-      console.log('📱 [OneSignal] Script d\'initialisation chargé...');
-      
-      // Méthode recommandée par OneSignal v16
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      
-      OneSignalDeferred.push(async function(OneSignal) {
-        console.log('📱 [OneSignal] SDK chargé, début init...');
-        
-        try {
-          // INITIALISATION MINIMALE
-          await OneSignal.init({
-            appId: "3ed3f3a4-01f5-407e-a9c5-129c11d6f53b",
-            
-            // IMPORTANT: Désactiver la demande automatique
-            allowLocalhostAsSecureOrigin: true,
-            promptOptions: {
-              // Ne pas montrer automatiquement
-              slidedown: {
-                enabled: false
-              }
+<script>
+  window.OneSignalGlobal = null;
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.ENABLE_ONESIGNAL) {
+      console.log('🛑 [OneSignal] Désactivé dans config.js');
+      return;
+    }
+
+    const sdk = document.createElement('script');
+    sdk.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js';
+    sdk.defer = true;
+    document.head.appendChild(sdk);
+
+    console.log('📱 [OneSignal] Chargement du SDK...');
+
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+    OneSignalDeferred.push(async function(OneSignal) {
+      console.log('📱 [OneSignal] SDK chargé, début init...');
+
+      try {
+        await OneSignal.init({
+          appId: "3ed3f3a4-01f5-407e-a9c5-129c11d6f53b",
+          allowLocalhostAsSecureOrigin: true,
+          promptOptions: {
+            slidedown: {
+              enabled: false
             }
-          });
-          
-          console.log('✅ [OneSignal] Initialisation réussie');
-          
-          // Vérifier l'état des notifications
-          const isSubscribed = OneSignal.User.PushSubscription.optedIn;
-          console.log('📱 [OneSignal] Abonnement actif:', isSubscribed);
-          
-          // Exposer OneSignal globalement pour vos autres scripts
-          window.OneSignalGlobal = OneSignal;
-          
-        } catch (error) {
-          console.error('❌ [OneSignal] Erreur initialisation:', error);
-          console.log('⚠️ [OneSignal] Fallback vers notifications natives');
-        }
-      });
-      
-      // Fallback si le SDK ne charge pas après 5 secondes
-      setTimeout(function() {
-        if (typeof OneSignal === 'undefined') {
-          console.warn('⚠️ [OneSignal] Timeout - SDK non chargé après 5s');
-          console.log("💡 Causes possibles d'un OneSignal 'non défini':");
-          console.log('1. Bloqueur de publicités');
-          console.log('2. Firefox avec protection renforcée');
-          console.log('3. Problème réseau');
-        }
-      }, 5000);
-    </script>
+          }
+        });
+
+        console.log('✅ [OneSignal] Initialisation réussie');
+        window.OneSignalGlobal = OneSignal;
+      } catch (error) {
+        console.error('❌ [OneSignal] Erreur initialisation:', error);
+        console.log('⚠️ [OneSignal] Fallback vers notifications natives');
+      }
+    });
+  });
+</script>
 
 
     <!---- Script de configuration (PWA child)  et core/app.js une fois que OneSignal est chargé ---->
@@ -157,10 +144,11 @@
         <footer class="app-footer">
              <div class="footer-content">
                 <img id="footer-logo"
-                     src="core/assets/icons/ORIGINE-192.png"
-                     alt="ORIGINE" 
+                     src="core/assets/icons/EVOLUTION-192.png"
+                     alt="EVOLUTION" 
                      class="footer-logo">
-                <a href="https://coaching.sekhamet.com/school/course/origine/"
+                <a id="support-link"
+                   href="https://coaching.sekhamet.com/school/course/enveloppe/"
                    target="_blank" 
                    rel="noopener noreferrer"
                    class="systeme-btn">
@@ -225,12 +213,30 @@
         </footer>
     </div>
 
-    
+    <div id="error-banner" class="error-banner" hidden>
+  <div class="error-banner-head">
+    <div class="error-banner-title">⚠️ Un souci technique a été détecté</div>
+    <button id="error-banner-close" class="error-banner-close" type="button" aria-label="Fermer">✕</button>
+  </div>
+  <div id="error-banner-text" class="error-banner-text">
+    L’application a rencontré une erreur. Tu peux ignorer ce message ou envoyer un signalement au support.
+  </div>
+  <div class="error-banner-actions">
+    <button id="error-banner-mail" class="error-banner-btn primary" type="button">
+      📩 Envoyer au support
+    </button>
+    <button id="error-banner-copy" class="error-banner-btn secondary" type="button">
+      📋 Copier les détails
+    </button>
+  </div>
+</div>
+
+
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('core/service-worker.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .then(reg => console.log('Service Worker enregistré'))
                     .catch(err => console.log('Erreur Service Worker:', err));
             });

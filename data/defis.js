@@ -838,14 +838,20 @@ function saveProgression() {
 // Charge la progression depuis le localStorage
 function loadProgression() {
   const sauvegarde = localStorage.getItem(`${window.APP_ID}_defis_progression`);
-  if (sauvegarde) {
+  if (!sauvegarde || sauvegarde === 'undefined' || sauvegarde === 'null') return;
+
+  try {
     const defisSauves = JSON.parse(sauvegarde);
+    if (!Array.isArray(defisSauves)) return;
+
     defisSauves.forEach((defiSauve, index) => {
       if (window.DEFIS[index]) {
         window.DEFIS[index].termine = defiSauve.termine;
         window.DEFIS[index].dateValidation = defiSauve.dateValidation;
       }
     });
+  } catch (e) {
+    console.warn('⚠️ Progression ignorée : JSON invalide', e);
   }
 }
 
