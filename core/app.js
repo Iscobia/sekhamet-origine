@@ -1444,33 +1444,41 @@ function setNoteForDay(day, text) {
       // ========== BOUTONS DÉPANNAGE ==========
 
       // 1. VIDER LE CACHE
-      document.getElementById('clear-cache-btn')?.addEventListener('click', async function() {
+      document.getElementById('clear-cache-btn')?.addEventListener('click', async function () {
         const btn = this;
-        if (!confirm("Vider le cache ?")) return;
-        btn.textContent = 'Nettoyage...';
+        const originalText = btn.textContent;
+
+        const confirmed = confirm(
+          "Tu vas vider le cache de l'application et recharger la page. Continuer ?"
+        );
+        if (!confirmed) return;
+
         btn.disabled = true;
+        btn.textContent = "🧹 Nettoyage...";
+
         try {
-          if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            const messageChannel = new MessageChannel();
-            messageChannel.port1.onmessage = (event) => {
-              if (event.data.success) {
-                setTimeout(() => window.location.reload(), 500);
-              }
-              btn.textContent = '🗑️ Vider le cache maintenant';
-              btn.disabled = false;
-            };
-            navigator.serviceWorker.controller.postMessage(
-              { action: 'CLEAR_CACHE' },
-              [messageChannel.port2]
-            );
-          } else if ('caches' in window) {
-            await caches.delete(CACHE_NAME);
-            setTimeout(() => window.location.reload(), 500);
+          if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(registrations.map(reg => reg.unregister()));
           }
+
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+          }
+
+          console.log("✅ Cache et Service Workers supprimés");
+
+          // Petit délai pour laisser le navigateur finir le nettoyage
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
+
         } catch (error) {
-          console.error('Erreur:', error);
-          btn.textContent = '🗑️ Vider le cache maintenant';
+          console.error("❌ Erreur pendant le nettoyage du cache :", error);
+          alert("Le nettoyage du cache a rencontré un problème. Tu peux réessayer.");
           btn.disabled = false;
+          btn.textContent = originalText;
         }
       });
 
