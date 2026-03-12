@@ -1,5 +1,169 @@
 // data/defis.js
+const DefisReset = [
 
+  {
+  jour: 1,
+  titre: "Respirer profondément",
+  description: "Pendant une minute, prends de longues respirations calmes. Si cela t’aide, mets une musique douce pour te donner un repère de temps et faciliter la détente."
+  },
+
+  {
+  jour: 2,
+  titre: "Sentir ses pieds",
+  description: "Observe les sensations dans tes pieds. Tu peux le faire en marchant lentement ou après un auto-massage. Prends simplement le temps de ressentir."
+  },
+
+  {
+  jour: 3,
+  titre: "Respiration et émotions",
+  description: "Pose une main sur ton ventre et respire tranquillement. Observe si des sensations ou des émotions apparaissent. Accueille ce qui est là."
+  },
+
+  {
+  jour: 4,
+  titre: "Marcher en silence",
+  description: "Marche pendant deux minutes en silence. Écoute les sons autour de toi et observe tes sensations. Laisse simplement l’expérience te traverser."
+  },
+
+  {
+  jour: 5,
+  titre: "Regarder autrement",
+  description: "Choisis un objet ordinaire et observe-le comme si tu le voyais pour la première fois. Formes, textures, couleurs… prends le temps de le redécouvrir."
+  },
+
+  {
+  jour: 6,
+  titre: "Écouter sans nommer",
+  description: "Pendant deux minutes, écoute les sons autour de toi sans essayer de les identifier. Laisse-les simplement apparaître et disparaître."
+  },
+
+  {
+  jour: 7,
+  titre: "Une odeur, un souvenir",
+  description: "Prends un moment pour sentir une odeur autour de toi. Observe si elle fait surgir des souvenirs, des images ou des émotions."
+  },
+
+  {
+  jour: 8,
+  titre: "Explorer une texture",
+  description: "Prends un objet et ressens sa texture avec attention. Rugueux, doux, froid, chaud… laisse ton attention se poser sur ces sensations."
+  },
+
+  {
+  jour: 9,
+  titre: "Observer une pensée",
+  description: "Y a-t-il une pensée qui revient souvent aujourd’hui ? Observe-la comme si tu étais un témoin extérieur, sans essayer de la changer."
+  },
+
+  {
+  jour: 10,
+  titre: "Cinq respirations conscientes",
+  description: "Prends cinq respirations lentes et profondes. Sens l’air entrer et sortir, et laisse ton corps se poser un peu plus à chaque souffle."
+  },
+
+  {
+  jour: 11,
+  titre: "S’observer de l’intérieur",
+  description: "Prends une minute pour t’installer confortablement. Porte ton attention vers l’intérieur et observe simplement ce qui se passe en toi."
+  },
+
+  {
+  jour: 12,
+  titre: "Observer son état intérieur",
+  description: "Comment te sens-tu maintenant ? Tendu.e, apaisé.e, fatigué.e, en alerte, heureux.se, triste ? Observe ton état intérieur sans jugement."
+  },
+
+  {
+  jour: 13,
+  titre: "Écouter son corps",
+  description: "Pose intérieurement la question : « De quoi ai-je besoin ? » Accueille la première réponse qui apparaît, même si elle semble simple."
+  },
+
+  {
+  jour: 14,
+  titre: "Un lieu apaisant",
+  description: "Ferme les yeux et visualise un lieu qui t’apaise profondément. Imagine les couleurs, les sons, l’atmosphère."
+  },
+
+  {
+  jour: 15,
+  titre: "Relâcher le corps",
+  description: "Imagine ton corps complètement détendu. Laisse chaque zone se relâcher progressivement, comme si le poids du corps se déposait."
+  },
+
+  {
+  jour: 16,
+  titre: "Sentir la gratitude",
+  description: "Pense à quelque chose pour lequel tu ressens de la gratitude. Observe comment cette sensation se manifeste dans ton corps."
+  },
+
+  {
+  jour: 17,
+  titre: "Nommer l’essentiel",
+  description: "Prends un instant pour mettre des mots sur une chose importante pour toi aujourd’hui. Qu’est-ce qui compte vraiment ?"
+  },
+
+  {
+  jour: 18,
+  titre: "Ce qui te donne de l’énergie",
+  description: "Observe ce qui, dans ta vie, te donne de l’énergie et te fait te sentir vivant.e. Note ce qui apparaît."
+  },
+
+  {
+  jour: 19,
+  titre: "Écrire une intention",
+  description: "Écris une intention simple pour demain. Quel petit pas aimerais-tu faire vers ce qui compte pour toi ?"
+  },
+
+  {
+  jour: 20,
+  titre: "Passer à l’action",
+  description: "Fais aujourd’hui une action, même minuscule, pour aller vers l’intention que tu as choisie hier."
+  },
+
+  {
+  jour: 21,
+  titre: "Intégration et gratitude",
+  description: "Observe les changements que tu as peut-être vécus depuis le début de ces défis. Écris une lettre de gratitude envers toi-même pour ce chemin parcouru, puis brûle-la pour symboliser un nouveau départ."
+  },
+
+  {
+  jour: 22,
+  titre: "Aller plus loin",
+  description: "Si tu en ressens l’élan, la créatrice de cette application a préparé un quiz pour t’aider à découvrir d’autres outils pour ton chemin intérieur. En attendant, tu peux aussi poursuivre l’exploration avec quelques jours bonus."
+  },
+
+  {
+  jour: 23,
+  titre: "Bonus — Observer le souffle",
+  description: "Pendant deux minutes, observe simplement ton souffle. Laisse-le circuler naturellement."
+  },
+
+  {
+  jour: 24,
+  titre: "Bonus — Sentir le cœur",
+  description: "Prends un moment pour ressentir les battements de ton cœur ou la zone de ta poitrine."
+  },
+
+  {
+  jour: 25,
+  titre: "Bonus — Sourire doucement",
+  description: "Pendant trente secondes, laisse apparaître un léger sourire. Observe ce que cela change dans ton état intérieur."
+  },
+
+  {
+  jour: 26,
+  titre: "Bonus — Écouter son corps",
+  description: "Ferme les yeux quelques instants et écoute ton corps. Quelles sensations sont présentes ?"
+  },
+
+  {
+  jour: 27,
+  titre: "Bonus — Question intérieure",
+  description: "Pose intérieurement la question : « Quelle est la prochaine étape pour moi ? » Laisse venir la réponse naturellement."
+  }
+
+];
 
 const DefisOrigine = [
   {
@@ -869,7 +1033,9 @@ function initializeApp() {
 window.DEFIS_BY_APP = {
   origine: DefisOrigine,
   enveloppe: DefisEnveloppe,
-  emergence: DefisEmergence
+  emergence: DefisEmergence,
+  envol: DefisEnvol,
+  reset: DefisReset
 };
 
 window.DEFIS = window.DEFIS_BY_APP[window.APP_ID];
