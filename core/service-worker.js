@@ -14,10 +14,10 @@ try {
 
 const CACHE_NAME = 'origine-cache-v1.1';
 const urlsToCache = [
-  '/sekhamet-origine/',
-  '/sekhamet-origine/index.html',
-  '/sekhamet-origine/style.css',
-  '/sekhamet-origine/data/defis.js',
+  '/',
+  '/index.html',
+  '/style.css',
+  '/data/defis.js',
 ];
 
 self.addEventListener('install', (event) => {
