@@ -14,14 +14,14 @@ try {
 
 const CACHE_NAME = 'origine-cache-v3';
 const urlsToCache = [
-  '/sekhamet-origine/',
-  '/sekhamet-origine/index.html',
-  '/sekhamet-origine/config.js',
-  '/sekhamet-origine/manifest.json',
-  '/sekhamet-origine/theme.css',
-  '/sekhamet-origine/data/defis.js',
-  '/sekhamet-origine/core/app.js',
-  '/sekhamet-origine/core/notifications.js'
+  '/',
+  '/index.html',
+  '/config.js',
+  '/manifest.json',
+  '/theme.css',
+  '/data/defis.js',
+  '/core/app.js',
+  '/core/notifications.js'
 ];
 
 
