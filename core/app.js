@@ -124,11 +124,11 @@ function renderProgramSelector() {
   const allowedIds = Array.isArray(window.ALLOWED_APP_IDS) ? window.ALLOWED_APP_IDS : [window.APP_ID];
 
   const allPrograms = {
-    envol: {
-      id: "envol",
-      name: "ENVOL",
-      subtitle: "(Ré)Alignement Corps et Esprit",
-      themeClass: "theme-envol"
+    fondation: {
+      id: "fondation",
+      name: "FONDATION",
+      subtitle: "Prépare ton terrain",
+      themeClass: "theme-fondation"
     },
     origine: {
       id: "origine",
@@ -151,16 +151,15 @@ function renderProgramSelector() {
     reset: {
       id: "reset",
       name: "RESET",
-      subtitle: "Reviens à toi, un pas à la fois",
+      subtitle: "Retour au calme",
       themeClass: "theme-reset"
     },
-    fondation: {
-      id: "fondation",
-      name: "FONDATION",
-      subtitle: "Prépare ton terrain",
-      themeClass: "theme-fondation"
-    },
-
+    envol: {
+      id: "envol",
+      name: "ENVOL",
+      subtitle: "Transformation globale",
+      themeClass: "theme-envol"
+    }
   };
 
   const programs = allowedIds
@@ -171,11 +170,22 @@ function renderProgramSelector() {
 
   if (programs.length <= 1) {
     container.style.display = "none";
+    container.removeAttribute("data-layout");
     return;
   }
 
   container.style.display = "";
   container.className = "program-selector-grid";
+
+  const hasFondation = allowedIds.includes("fondation");
+
+  if (hasFondation && programs.length === 2) {
+    container.dataset.layout = "duo-with-fondation";
+  } else if (hasFondation && programs.length >= 4) {
+    container.dataset.layout = "hub-with-fondation";
+  } else {
+    container.dataset.layout = "default";
+  }
 
   programs.forEach(program => {
     const button = document.createElement("button");
