@@ -99,7 +99,7 @@ window.APP_CONFIGS = {
     MAIN_TITLE: "Prépare ton terrain",
     BROWSER_TITLE: "FONDATION - Défi Quotidien",
     TOTAL_DAYS: 7,
-    SUPPORT_URL: "https://github.com/Iscobia/base-pwa-coaching/blob/main/data/FONDATION_Support.pdf"
+    SUPPORT_URL: "#fondation-support"
   },
 };
 
