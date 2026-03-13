@@ -927,6 +927,23 @@ backup-p {margin: 30px 0 2px 0px;}
   }
 }
 
+/* == Section spéciale FONDATION == */
+
+.program-chip.theme-fondation.is-active {
+  background: linear-gradient(160deg, #9c4fc2 0%, #5b2b73 100%);
+  border-color: #5b2b73;
+}
+
+@media (max-width: 700px) {
+  .program-selector-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .program-chip.theme-fondation {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ================ BACKUP WARNING NOTE =============== */
 /* =================  EVOLUTION only  ================= */
 
