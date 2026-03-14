@@ -34,25 +34,14 @@ window.FONDATION_SUPPORT = {
     },
 
     {
-      id: "facteur-humain",
-      label: "I - Le facteur humain",
-      shortLabel: "Le facteur humain",
-      trackCompletion: true,
-      html: `
-        <section class="support-section" data-section-id="facteur-humain">
-          <h1>I - Le facteur humain : observe ton approche à ton entourage et à tes aspirations</h1>
-        </section>
-      `
-    },
-
-    {
       id: "influence-entourage",
-      label: "1. L’influence consciente, inconsciente et subtile de notre entourage",
-      shortLabel: "1. Influence de l’entourage",
+      label: "I - Le facteur humain / 1. L’influence consciente, inconsciente et subtile de notre entourage",
+      shortLabel: "I / 1. Influence de l’entourage",
       trackCompletion: true,
       html: `
         <section class="support-section" data-section-id="influence-entourage">
-          <h2>1. L’influence consciente, inconsciente et subtile de notre entourage</h2>
+        <h1>I - Le facteur humain : observe ton approche à ton entourage et à tes aspirations</h1>
+        <h2>1. L’influence consciente, inconsciente et subtile de notre entourage</h2>
 
           <p>
             D’après les recherches de l’Institut HeartMath (cf Sources), les êtres humains diffusent

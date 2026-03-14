@@ -9,12 +9,13 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Icônes pour différents appareils -->
-    <link id="app-favicon" rel="icon" href="core/assets/icons/EVOLUTION-192.png">
-    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/EVOLUTION-192.png">
+    <link id="app-favicon" rel="icon" href="core/assets/icons/ORIGINE-192.png">
+    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/ORIGINE-192.png">
     
     <!-- Styles -->
     <link rel="stylesheet" href="core/style.css">
     <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="data/fondation/support-overlay.css">
     
     <title>Défis Quotidiens par Sekhamet</title>
 
@@ -68,6 +69,8 @@
     <!---- Script pour les notifications paramétrées dans core/notifications.js ---->
     <script src="core/notifications.js" defer></script>
     <script src="core/app.js" defer></script>
+    <script src="data/fondation/fondation-support.js" defer></script>
+    <script src="data/fondation/support-overlay.js" defer></script>
 </head>
     
 <body>
@@ -75,7 +78,7 @@
         <div id="program-selector"></div>
         <!-- En-tête -->
         <header class="app-header">
-              <h1 id="app-main-title">Mon Défi Quotidien</h1>
+              <h1 id="app-main-title">Vers l'Alimentation Consciente</h1>
               <div class="day-progress">Jour <span id="day-current">1</span>/<span id="day-total">77</span></div>
         </header>
         
@@ -155,11 +158,11 @@
         <footer class="app-footer">
              <div class="footer-content">
                 <img id="footer-logo"
-                     src="core/assets/icons/EVOLUTION-192.png"
-                     alt="EVOLUTION" 
+                     src="core/assets/icons/ORIGINE-192.png"
+                     alt="ORIGINE" 
                      class="footer-logo">
                 <a id="support-link"
-                   href="https://coaching.sekhamet.com/school/course/enveloppe/"
+                   href="https://coaching.sekhamet.com/school/course/origine/"
                    target="_blank" 
                    rel="noopener noreferrer"
                    class="systeme-btn">
@@ -225,23 +228,112 @@
     </div>
 
     <div id="error-banner" class="error-banner" hidden>
-  <div class="error-banner-head">
-    <div class="error-banner-title">⚠️ Un souci technique a été détecté</div>
-    <button id="error-banner-close" class="error-banner-close" type="button" aria-label="Fermer">✕</button>
-  </div>
-  <div id="error-banner-text" class="error-banner-text">
-    L’application a rencontré une erreur. Tu peux ignorer ce message ou envoyer un signalement au support.
-  </div>
-  <div class="error-banner-actions">
-    <button id="error-banner-mail" class="error-banner-btn primary" type="button">
-      📩 Envoyer au support
-    </button>
-    <button id="error-banner-copy" class="error-banner-btn secondary" type="button">
-      📋 Copier les détails
-    </button>
-  </div>
-</div>
+      <div class="error-banner-head">
+        <div class="error-banner-title">⚠️ Un souci technique a été détecté</div>
+        <button id="error-banner-close" class="error-banner-close" type="button" aria-label="Fermer">✕</button>
+      </div>
+      <div id="error-banner-text" class="error-banner-text">
+        L’application a rencontré une erreur. Tu peux ignorer ce message ou envoyer un signalement au support.
+      </div>
+      <div class="error-banner-actions">
+        <button id="error-banner-mail" class="error-banner-btn primary" type="button">
+          📩 Envoyer au support
+        </button>
+        <button id="error-banner-copy" class="error-banner-btn secondary" type="button">
+          📋 Copier les détails
+        </button>
+      </div>
+    </div>
 
+    <!-- Support de FONDATION -->
+    <!------ Overlay caché ----->
+
+    <div id="support-overlay" class="support-overlay" aria-hidden="true">
+      <div class="support-shell" role="dialog" aria-modal="true" aria-labelledby="support-overlay-title">
+        <aside class="support-sidebar">
+          <div class="support-sidebar-head">
+            <div class="support-sidebar-titles">
+              <div class="support-sidebar-kicker">Support intégré</div>
+              <div class="support-sidebar-title" id="support-overlay-title">FONDATION</div>
+              <div class="support-sidebar-subtitle" id="support-sidebar-subtitle"></div>
+            </div>
+          </div>
+
+          <div class="support-progress-box">
+            <div class="support-progress-label">Progression réelle</div>
+            <div class="support-progress-value" id="support-progress-value">0%</div>
+            <div class="support-progress-meta" id="support-progress-meta">0/0 chapitres terminés</div>
+          </div>
+
+          <nav class="support-toc" id="support-toc" aria-label="Sommaire du support"></nav>
+        </aside>
+
+        <section class="support-main">
+          <header class="support-topbar">
+            <div class="support-topbar-left">
+              <button
+                type="button"
+                class="support-icon-btn support-menu-btn"
+                id="support-menu-btn"
+                aria-label="Ouvrir le sommaire"
+              >☰</button>
+
+              <div class="support-topbar-title">
+                <div class="support-topbar-current" id="support-topbar-current">FONDATION</div>
+                <div class="support-topbar-sub" id="support-topbar-sub">Lecture du support</div>
+              </div>
+            </div>
+
+            <div class="support-topbar-right">
+              <span class="support-status-badge is-pending" id="support-status-badge">À explorer</span>
+              <button
+                type="button"
+                class="support-icon-btn"
+                id="support-close-btn"
+                aria-label="Fermer le support"
+              >✕</button>
+            </div>
+          </header>
+
+          <div class="support-content-wrap" id="support-content-wrap">
+            <article class="support-content" id="support-content"></article>
+          </div>
+
+          <footer class="support-bottombar">
+              <div class="support-nav-actions">
+                <button type="button" class="support-btn support-btn--ghost" id="support-prev-btn">← Chapitre précédent</button>
+                <button type="button" class="support-btn support-btn--primary" id="support-advance-btn">✅ Terminer et passer au suivant</button>
+              </div>
+          </footer>
+        </section>
+      </div>
+    </div>
+
+    <div id="support-mobile-drawer" class="support-mobile-drawer" aria-hidden="true">
+      <div class="support-mobile-backdrop" id="support-mobile-backdrop"></div>
+      <div class="support-mobile-panel">
+        <div class="support-mobile-head">
+          <div>
+            <div class="support-sidebar-kicker">Support intégré</div>
+            <div class="support-sidebar-title">FONDATION</div>
+          </div>
+          <button
+            type="button"
+            class="support-icon-btn"
+            id="support-mobile-close-btn"
+            aria-label="Fermer le sommaire"
+          >✕</button>
+        </div>
+
+        <div class="support-progress-box">
+          <div class="support-progress-label">Progression réelle</div>
+          <div class="support-progress-value" id="support-progress-value-mobile">0%</div>
+          <div class="support-progress-meta" id="support-progress-meta-mobile">0/0 chapitres terminés</div>
+        </div>
+
+        <nav class="support-toc" id="support-toc-mobile" aria-label="Sommaire mobile du support"></nav>
+      </div>
+    </div>
 
     <!-- Service Worker Registration -->
     <script>

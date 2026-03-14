@@ -148,9 +148,8 @@
     const currentTitle = qs("support-topbar-current");
     const currentSub = qs("support-topbar-sub");
     const statusBadge = qs("support-status-badge");
-    const toggleBtn = qs("support-toggle-done-btn");
+    const advanceBtn = qs("support-advance-btn");
     const prevBtn = qs("support-prev-btn");
-    const nextBtn = qs("support-next-btn");
     const contentWrap = qs("support-content-wrap");
     const subtitle = qs("support-sidebar-subtitle");
 
@@ -185,25 +184,30 @@
       }
     }
 
-    if (toggleBtn) {
+    const index = getSectionIndex(current.id);
+    const isLastSection = index >= getSections().length - 1;
+
+    if (prevBtn) prevBtn.disabled = index <= 0;
+
+    if (advanceBtn) {
       if (current.trackCompletion === false) {
-        toggleBtn.disabled = true;
-        toggleBtn.className = "support-btn support-btn--ghost";
-        toggleBtn.textContent = "ℹ️ Chapitre informatif";
+        advanceBtn.disabled = isLastSection;
+        advanceBtn.className = "support-btn support-btn--ghost";
+        advanceBtn.textContent = isLastSection
+          ? "ℹ️ Fin du support"
+          : "Chapitre suivant →";
       } else if (done) {
-        toggleBtn.disabled = false;
-        toggleBtn.className = "support-btn support-btn--done";
-        toggleBtn.textContent = "✅ Chapitre terminé";
+        advanceBtn.disabled = isLastSection;
+        advanceBtn.className = "support-btn support-btn--done";
+        advanceBtn.textContent = isLastSection
+          ? "✅ Chapitre terminé"
+          : "✅ Terminé - chapitre suivant";
       } else {
-        toggleBtn.disabled = false;
-        toggleBtn.className = "support-btn support-btn--primary";
-        toggleBtn.textContent = "✅ Marquer comme terminé";
+        advanceBtn.disabled = false;
+        advanceBtn.className = "support-btn support-btn--primary";
+        advanceBtn.textContent = "✅ Terminer et passer au suivant";
       }
     }
-
-    const index = getSectionIndex(current.id);
-    if (prevBtn) prevBtn.disabled = index <= 0;
-    if (nextBtn) nextBtn.disabled = index < 0 || index >= getSections().length - 1;
 
     if (contentWrap) contentWrap.scrollTop = 0;
   }
@@ -229,6 +233,27 @@
 
     goToSection(getSections()[nextIndex].id);
   }
+
+
+  function advanceCurrentSection() {
+    const state = loadState();
+    const current = getSectionById(state.currentSectionId);
+    if (!current) return;
+
+    if (current.trackCompletion !== false && !isCompleted(current.id)) {
+      toggleCompleted(current.id);
+    }
+
+    const currentIndex = getSectionIndex(current.id);
+    const nextIndex = currentIndex + 1;
+
+    if (nextIndex >= 0 && nextIndex < getSections().length) {
+      setCurrentSection(getSections()[nextIndex].id);
+    }
+
+    render();
+  }
+
 
   function open() {
     const overlay = qs("support-overlay");
@@ -292,15 +317,9 @@
         return;
       }
 
-      if (event.target.closest("#support-next-btn")) {
-        goToAdjacent(1);
+      if (event.target.closest("#support-advance-btn")) {
+        advanceCurrentSection();
         return;
-      }
-
-      if (event.target.closest("#support-toggle-done-btn")) {
-        const currentId = loadState().currentSectionId;
-        toggleCompleted(currentId);
-        render();
       }
     });
 
