@@ -17,6 +17,13 @@ window.FONDATION_SUPPORT = {
         <section class="support-section" data-section-id="intro">
           <p class="support-kicker">Bonus - Fondation</p>
           <h1>La base pour évoluer sereinement</h1>
+          <div class="support-card support-card--soft">
+            <p>
+              Ce support accompagne ton parcours FONDATION. Il te permet de prendre du recul sur
+              ton environnement, ton entourage, tes schémas relationnels, ton rapport à toi-même
+              et la façon dont tu soutiens — ou non — ta propre expansion.
+            </p>
+          </div>
         </section>
       `
     },
@@ -158,17 +165,7 @@ window.FONDATION_SUPPORT = {
           </p>
 
           <p>Prends bien le temps de penser aux qualités et défauts de chacun.</p>
-        </section>
-      `
-    },
-
-    {
-      id: "qualite-entourage",
-      label: "Exercice Pratique - Je fais le point sur qualité de mon entourage",
-      shortLabel: "Exercice Pratique - Entourage",
-      trackCompletion: true,
-      html: `
-        <section class="support-section" data-section-id="qualite-entourage">
+        
           <h2>Exercice Pratique - Je fais le point sur qualité de mon entourage</h2>
 
           <p>
@@ -220,7 +217,8 @@ window.FONDATION_SUPPORT = {
             En fonction de ta posture de responsabilisation ou de déresponsabilisation, tu vas pouvoir
             adopter plusieurs comportements sociaux : on va développer ça maintenant.
           </p>
-
+          
+          <h3>a) La Victime</h3>
           <p>
             Pour éviter de te responsabiliser, tu peux choisir une position de « victime », qui te permet de
             rejeter la faute sur une ou plusieurs autre.s personne.s. C’est sécurisant puisque tu te dis que
@@ -246,7 +244,7 @@ window.FONDATION_SUPPORT = {
             t’entraîne dans son illusion en accaparant le temps et l’énergie que tu lui attribues pour la
             soutenir.
           </p>
-
+          <h3>b) Le Sauveur</h3>
           <p>
             En essayant d’aider les victimes sans les remettre en question, les sauveurs les confortent dans
             leur illusion, ce qui va rendre les « victimes » reconnaissantes vis-à-vis d’eux. Il y a alors une
@@ -254,7 +252,7 @@ window.FONDATION_SUPPORT = {
             reconnaissance et la victime se repose sur le sauveur pour valider ses propos. L’un donne son
             énergie à l’autre et le légitimise.
           </p>
-
+          <h3>c) Le Bourreau</h3>
           <p>
             La victime peut aussi devenir un bourreau, quand la frustration se fait trop grande. Elle peut
             commettre des actes de violence sans en prendre la responsabilité, parce que c’est « normal »
@@ -265,7 +263,7 @@ window.FONDATION_SUPPORT = {
             sortir sur quelqu’un d’autre, parfois son bourreau initial. La victime devient bourreau et le
             bourreau devient victime.
           </p>
-
+         <h3>d) Et si je suis parfois l'un et parfois l'autre ?</h3>
           <p>
             Souvent, on peut être les trois à la fois : moi-même, en examinant davantage ces schémas, je
             m’aperçois que je dois rester attentive à ne pas partir dans l’un d’eux ! Pour t’offrir le meilleur
