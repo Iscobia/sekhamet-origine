@@ -1,7 +1,7 @@
 window.FONDATION_SUPPORT = {
   meta: {
     id: "fondation-support",
-    title: "Fondation",
+    title: "FONDATION",
     subtitle: "La base pour évoluer sereinement",
     storageKey: "fondation_support_completed_sections_v2",
     formStorageKey: "fondation_support_forms_v2"
@@ -79,7 +79,7 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-card support-card--note support-inline-note">
               <p>
-                Choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
+                Exemple: choisis une bouteille en verre à laquelle tu répéteras 9 fois ton mantra au moins 10 minutes
                 avant de boire son eau (3 fois à voix haute, 3 fois à voix basse et 3 fois dans ta tête). Tu peux la
                 préparer en avance.
               </p>
@@ -155,23 +155,22 @@ window.FONDATION_SUPPORT = {
           </div>
 
           <p>
-            Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu penses de ton entourage.
-          </p> 
+            Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu
+            penses de ton entourage. </p> 
           <p> 
-            Je te donne un tableau dynamique pour lister les personnes que tu côtoies actuellement.
+            Je te donne un tableau dynamique pour lister les personnes que tu côtoies actuellement :
+            cliques sur "Ajouter une personne" pour ajouter une personne, ou "Supprimer" si tu veux supprimer l'entrée.
           </p> 
           <p>  
-            Ce tableau doit t’aider à faire le point la qualité de ton entourage : on est la moyenne des 5 personnes que l’on côtoie le plus. Si leur contact nous alourdit, alors on aura tendance à stagner ou nous éloigner de nous-même. Si au contraire elles nous apaisent ou nous offrent un contact agréable, elles ont de fortes chances de nous accepter tel.les que nous sommes ou tel.le que nous voulons devenir.
+            Ce tableau doit t’aider à faire le point la qualité de ton entourage : on est la moyenne des 5 personnes que
+            l’on côtoie le plus. Si leur contact nous alourdit, alors on aura tendance à stagner ou nous éloigner de nous-même.
+            Si au contraire elles nous apaisent ou nous offrent un contact agréable, elles ont de fortes chances de nous accepter
+            tel.les que nous sommes ou tel.le que nous voulons devenir.
           </p>
 
           <p>Prends bien le temps de penser aux qualités et défauts de chacun.</p>
         
           <h2>Exercice Pratique - Je fais le point sur qualité de mon entourage</h2>
-
-          <p>
-            Je te propose de lister les personnes qui te sont proches. Famille, collègues, amis d’enfance,
-            amis de hobby… Faisons le point sur ce qu’elles t’apportent et ce qu’elles font peser sur toi.
-          </p>
 
           <div class="support-card support-card--practice support-dynamic-form" data-support-form="entourage-quality">
             <div class="support-people-list" data-support-people-list></div>
@@ -195,12 +194,12 @@ window.FONDATION_SUPPORT = {
     },
 
     {
-      id: "victime-sauveur-bourreau",
+      id: "victime-sauveur-bourreau-intro",
       label: "3. Victime ? Sauveur ? Bourreau ?",
       shortLabel: "3. Victime / Sauveur / Bourreau",
       trackCompletion: true,
       html: `
-        <section class="support-section" data-section-id="victime-sauveur-bourreau">
+        <section class="support-section" data-section-id="victime-sauveur-bourreau-intro">
           <h2>3. Victime ? Sauveur ? Bourreau ?</h2>
 
           <p>
@@ -217,8 +216,19 @@ window.FONDATION_SUPPORT = {
             En fonction de ta posture de responsabilisation ou de déresponsabilisation, tu vas pouvoir
             adopter plusieurs comportements sociaux : on va développer ça maintenant.
           </p>
-          
-          <h3>a) La Victime</h3>
+        </section>
+      `
+    },
+
+    {
+      id: "la-victime",
+      label: "3.a) La Victime",
+      shortLabel: "3.a) La Victime",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="la-victime">
+          <h2>3.a) La Victime</h2>
+
           <p>
             Pour éviter de te responsabiliser, tu peux choisir une position de « victime », qui te permet de
             rejeter la faute sur une ou plusieurs autre.s personne.s. C’est sécurisant puisque tu te dis que
@@ -229,6 +239,18 @@ window.FONDATION_SUPPORT = {
             accepter de prendre tes dispositions pour te sortir de l’emprise que tu dénonces plus ou moins
             consciemment.
           </p>
+        </section>
+      `
+    },
+
+    {
+      id: "le-sauveur",
+      label: "3.b) Le Sauveur",
+      shortLabel: "3.b) Le Sauveur",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="le-sauveur">
+          <h2>3.b) Le Sauveur</h2>
 
           <p>
             Le besoin de reconnaissance et de don de soi peuvent te pousser à aider des personnes qui
@@ -244,7 +266,7 @@ window.FONDATION_SUPPORT = {
             t’entraîne dans son illusion en accaparant le temps et l’énergie que tu lui attribues pour la
             soutenir.
           </p>
-          <h3>b) Le Sauveur</h3>
+
           <p>
             En essayant d’aider les victimes sans les remettre en question, les sauveurs les confortent dans
             leur illusion, ce qui va rendre les « victimes » reconnaissantes vis-à-vis d’eux. Il y a alors une
@@ -252,7 +274,19 @@ window.FONDATION_SUPPORT = {
             reconnaissance et la victime se repose sur le sauveur pour valider ses propos. L’un donne son
             énergie à l’autre et le légitimise.
           </p>
-          <h3>c) Le Bourreau</h3>
+        </section>
+      `
+    },
+
+    {
+      id: "le-bourreau",
+      label: "3.c) Le Bourreau",
+      shortLabel: "3.c) Le Bourreau",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="le-bourreau">
+          <h2>3.c) Le Bourreau</h2>
+
           <p>
             La victime peut aussi devenir un bourreau, quand la frustration se fait trop grande. Elle peut
             commettre des actes de violence sans en prendre la responsabilité, parce que c’est « normal »
@@ -263,7 +297,19 @@ window.FONDATION_SUPPORT = {
             sortir sur quelqu’un d’autre, parfois son bourreau initial. La victime devient bourreau et le
             bourreau devient victime.
           </p>
-         <h3>d) Et si je suis parfois l'un et parfois l'autre ?</h3>
+        </section>
+      `
+    },
+
+    {
+      id: "parfois-lun-et-lautre",
+      label: "3.d) Et si je suis parfois l’un et parfois l’autre ?",
+      shortLabel: "3.d) Et si je suis parfois l’un et parfois l’autre ?",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="parfois-lun-et-lautre">
+          <h2>3.d) Et si je suis parfois l’un et parfois l’autre ?</h2>
+
           <p>
             Souvent, on peut être les trois à la fois : moi-même, en examinant davantage ces schémas, je
             m’aperçois que je dois rester attentive à ne pas partir dans l’un d’eux ! Pour t’offrir le meilleur
@@ -273,35 +319,84 @@ window.FONDATION_SUPPORT = {
             aspects de ta réalité. Nous pourrons en discuter lors de notre prochaine séance, en groupe ou en
             individuel.
           </p>
+        </section>
+      `
+    },
+
+    {
+      id: "exercices-victime",
+      label: "3.→ Exercices pour la Victime",
+      shortLabel: "3.→ Exercices pour la Victime",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="exercices-victime">
+          <h2>→ Exercices pour la Victime</h2>
 
           <div class="support-card support-card--exercise">
-            <h3>Victime :</h3>
             <ul>
-              <li>Exprimer sur un papier ce que je ressens de la situation. Mettre des mots clairs sur ce que je reproche à l’autre ou aux autres, pourquoi leurs réactions me font du mal.</li>
-              <li>Puis-je exprimer mes propres torts sans me sentir vulnérable ou sur la défensive ? Que pourrais-je changer pour transformer la situation, soit en dialogue et évolution commune, soit pour en sortir ?</li>
-              <li>Que dis mon entourage de ma situation ? Y a-t-il quelque chose que je n’accepte pas ? Ce que je refuse dans cette situation pourrait-il être à l’origine de ma douleur ?</li>
-              <li>La personne que je perçois comme un bourreau serait-elle prête à changer ou à prendre mon avis en compte si je le lui exprimais directement et sans m’énerver ou me comporter comme une victime ? Cherche-t-elle à me convaincre et à diriger mon raisonnement ou me laisse-t-elle m’exprimer librement ?<br><strong>Exercice :</strong> imaginer une situation de dialogue jusqu’à ce que je ressente la posture intérieure qui me permet de m’exprimer avec lucidité et intégrité.</li>
-              <li><strong>Note :</strong> quand tu te mets en position de victime, ce que tu émets ou que tu véhicules via ton comportement invite à t’écraser. Si tu changes de posture dans la situation, tu changes le dialogue.</li>
-              <li>Comment pourrais-je me sortir moi-même de la situation dont je me sens prisonnier.e ? De quoi est-ce que je ne me sens pas capable, ou quelles sont les risques que je ne veux pas affronter ? Si je perds certaines choses, qu’est-ce que je gagnerais en échange (vraiment, sans me berner sur ce que dit mon « bourreau » ou ce que dictent mes peurs) ? Comment puis-je rompre la situation dans laquelle je me trouve et que puis-je faire pour m’assurer que j’y arrive ?</li>
+              <li><strong>Exprimer sur un papier</strong> ce que je ressens de la situation. Mettre des mots clairs sur ce que je reproche à l’autre ou aux autres, pourquoi leurs réactions me font du mal.</li>
+              <li><strong>Puis-je exprimer mes propres torts</strong> sans me sentir vulnérable ou sur la défensive ? Que pourrais-je changer pour transformer la situation, soit en dialogue et évolution commune, soit pour en sortir ?</li>
+              <li><strong>Que dis mon entourage de ma situation ?</strong> Y a-t-il quelque chose que je n’accepte pas ? Ce que je refuse dans cette situation pourrait-il être à l’origine de ma douleur ?</li>
+              <li><strong>La personne que je perçois comme un bourreau</strong> serait-elle prête à changer ou à prendre mon avis en compte si je le lui exprimais directement et sans m’énerver ou me comporter comme une victime ? Cherche-t-elle à me convaincre et à diriger mon raisonnement ou me laisse-t-elle m’exprimer librement ?</li>
             </ul>
           </div>
 
           <div class="support-card support-card--exercise">
-            <h3>Sauveur :</h3>
-            <ul>
-              <li>Quels sont mes émotions et mes ressentis physiques lorsque je prends en charge la ou les personnes qui souffrent et que j’ai choisi d’aider ?</li>
-              <li>La situation d’aide que j’offre me draine-t-elle ou me donne-t-elle de l’énergie ?</li>
-              <li>Quelle est la raison pour laquelle j’aide cette ou ces personnes ? Est-ce que j’attends quelque chose (retour émotionnel, matériel ou gratitude) ?</li>
-              <li>Dans ma propre vie, comment pourrais-je ressentir naturellement de la reconnaissance ou de la gratitude envers moi-même ? Qu’est-ce que je fais naturellement qui peut aider naturellement les autres, et qui est le public qui valoriserait le plus mon savoir faire ?</li>
-            </ul>
+            <h3>Exercice :</h3>
+            <p>
+              imaginer une situation de dialogue jusqu’à ce que je ressente la posture intérieure qui me
+              permet de m’exprimer avec lucidité et intégrité.
+            </p>
+          </div>
+
+          <div class="support-card support-card--note">
+            <p><u><strong>Note :</strong></u> <em>quand tu te mets en position de victime, ce que tu émets ou que tu véhicules via ton comportement invite à t’écraser. Si tu changes de posture dans la situation, tu changes le dialogue.</em></p>
           </div>
 
           <div class="support-card support-card--exercise">
-            <h3>Bourreau :</h3>
             <ul>
-              <li>De quoi est-ce que j’accuse les autres ? Faire une liste des accusations (ça t’oblige à les accepter, tu ne peux plus les fuir).</li>
-              <li>Ma victime est-elle une seule personne ou un groupe de personnes regroupées sous un signe particulier ? Qu’est-ce qui fait que je choisis cette personne ou ce groupe de personne en particulier ? Qu’est-ce qui me rend intérieurement légitime de m’en prendre à elle/eux ? Faire une liste de ce qui m’irrite ou m’incite, dans son/leur comportement, à m’en prendre à elle/eux.</li>
-              <li>Si je devais renvoyer ces accusations contre moi-même, à quoi feraient-elles allusion ? Quels sont mes comportements qui peuvent provoquer ce que je reproche à ma ou mes victime.s ou qui se rapprochent le plus de ces reproches ?</li>
+              <li><strong>Comment pourrais-je me sortir moi-même</strong> de la situation dont je me sens prisonnier.e ? De quoi est-ce que je ne me sens pas capable, ou quelles sont les risques que je ne veux pas affronter ? Si je perds certaines choses, qu’est-ce que je gagnerais en échange (vraiment, sans me berner sur ce que dit mon « bourreau » ou ce que dictent mes peurs) ? Comment puis-je rompre la situation dans laquelle je me trouve et que puis-je faire pour m’assurer que j’y arrive ?</li>
+            </ul>
+          </div>
+        </section>
+      `
+    },
+
+    {
+      id: "exercices-sauveur",
+      label: "3.→ Exercices pour le Sauveur",
+      shortLabel: "3.→ Exercices pour le Sauveur",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="exercices-sauveur">
+          <h2>→ Exercices pour le Sauveur</h2>
+
+          <div class="support-card support-card--exercise">
+            <ul>
+              <li><strong>Quels sont mes émotions</strong> et mes ressentis physiques lorsque je prends en charge la ou les personnes qui souffrent et que j’ai choisi d’aider ?</li>
+              <li><strong>La situation d’aide que j’offre</strong> me draine-t-elle ou me donne-t-elle de l’énergie ?</li>
+              <li><strong>Quelle est la raison</strong> pour laquelle j’aide cette ou ces personnes ? Est-ce que j’attends quelque chose (retour émotionnel, matériel ou gratitude) ?</li>
+              <li><strong>Dans ma propre vie</strong>, comment pourrais-je ressentir naturellement de la reconnaissance ou de la gratitude envers moi-même ? Qu’est-ce que je fais naturellement qui peut aider naturellement les autres, et qui est le public qui valoriserait le plus mon savoir faire ?</li>
+            </ul>
+          </div>
+        </section>
+      `
+    },
+
+    {
+      id: "exercices-bourreau",
+      label: "3.→ Exercices pour le Bourreau",
+      shortLabel: "3.→ Exercices pour le Bourreau",
+      trackCompletion: true,
+      html: `
+        <section class="support-section" data-section-id="exercices-bourreau">
+          <h2>→ Exercices pour le Bourreau</h2>
+
+          <div class="support-card support-card--exercise">
+            <ul>
+              <li><strong>De quoi est-ce que j’accuse les autres ?</strong> Faire une liste des accusations (ça t’oblige à les accepter, tu ne peux plus les fuir).</li>
+              <li><strong>Ma victime est-elle</strong> une seule personne ou un groupe de personnes regroupées sous un signe particulier ? Qu’est-ce qui fait que je choisis cette personne ou ce groupe de personne en particulier ? Qu’est-ce qui me rend intérieurement légitime de m’en prendre à elle/eux ? Faire une liste de ce qui m’irrite ou m’incite, dans son/leur comportement, à m’en prendre à elle/eux.</li>
+              <li><strong>Si je devais renvoyer ces accusations contre moi-même</strong>, à quoi feraient-elles allusion ? Quels sont mes comportements qui peuvent provoquer ce que je reproche à ma ou mes victime.s ou qui se rapprochent le plus de ces reproches ?</li>
             </ul>
           </div>
         </section>
@@ -631,7 +726,7 @@ window.FONDATION_SUPPORT = {
 
           <p>Je vais te proposer quelques outils pour aller dans ce sens.</p>
 
-          <h2>Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps</h2>
+          <h2 style="margin-top:50px">Précision importante : l’impact de ta voix intérieure et de tes mots sur ton corps</h2>
 
           <p>
             Lorsque nous parlons - à voix haute ou intérieurement - ce ne sont pas de simples syllabes qui
@@ -913,3 +1008,202 @@ window.FONDATION_SUPPORT = {
     }
   ]
 };
+
+
+(function () {
+  const FORM_STORAGE_KEY = window.FONDATION_SUPPORT?.meta?.formStorageKey || "fondation_support_forms_v2";
+  const PERSON_TEMPLATE = () => ({ who: "", brings: "", weighs: "", gauge: "" });
+
+  function loadFormsState() {
+    try {
+      const raw = localStorage.getItem(FORM_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      console.warn("⚠️ État des formulaires FONDATION illisible, réinitialisation.", error);
+      return {};
+    }
+  }
+
+  function saveFormsState(state) {
+    localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function getFormState(formId) {
+    const state = loadFormsState();
+    return state[formId] || {};
+  }
+
+  function setFormState(formId, value) {
+    const state = loadFormsState();
+    state[formId] = value;
+    saveFormsState(state);
+    updateSaveStatus(formId);
+  }
+
+  function updateSaveStatus(formId) {
+    document.querySelectorAll(`[data-support-save-status="${formId}"]`).forEach((node) => {
+      node.textContent = "Sauvegardé automatiquement";
+    });
+  }
+
+  function wireSimpleForm(formEl) {
+    const formId = formEl.getAttribute("data-support-form");
+    if (!formId || formEl.dataset.supportBound === "true") return;
+
+    const saved = getFormState(formId);
+    formEl.querySelectorAll("[data-support-input]").forEach((input) => {
+      const key = input.getAttribute("data-support-input");
+      if (Object.prototype.hasOwnProperty.call(saved, key)) {
+        input.value = saved[key] || "";
+      }
+      input.addEventListener("input", () => {
+        const next = { ...getFormState(formId), [key]: input.value };
+        setFormState(formId, next);
+      });
+    });
+
+    formEl.dataset.supportBound = "true";
+    updateSaveStatus(formId);
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function renderPeopleList(formEl) {
+    const formId = formEl.getAttribute("data-support-form");
+    const listEl = formEl.querySelector("[data-support-people-list]");
+    if (!formId || !listEl) return;
+
+    const state = getFormState(formId);
+    const people = Array.isArray(state.people) && state.people.length ? state.people : [PERSON_TEMPLATE()];
+
+    if (!Array.isArray(state.people) || !state.people.length) {
+      setFormState(formId, { ...state, people });
+    }
+
+    listEl.innerHTML = people.map((person, index) => `
+      <div class="support-person-card" data-person-index="${index}">
+        <div class="support-person-head">
+          <h3>Personne ${index + 1}</h3>
+          <button type="button" class="support-remove-person-btn" data-support-action="remove-person" data-person-index="${index}" ${people.length <= 1 ? "disabled" : ""}>Supprimer</button>
+        </div>
+        <div class="support-person-grid">
+          <label class="support-mini-card">
+            <span class="support-mini-title">Qui ?</span>
+            <textarea class="support-textarea support-textarea--mini" data-person-field="who" data-person-index="${index}">${escapeHtml(person.who || "")}</textarea>
+          </label>
+          <label class="support-mini-card">
+            <span class="support-mini-title">Ce qu’il/elle m’apporte</span>
+            <textarea class="support-textarea support-textarea--mini" data-person-field="brings" data-person-index="${index}">${escapeHtml(person.brings || "")}</textarea>
+          </label>
+          <label class="support-mini-card">
+            <span class="support-mini-title">Ce qui m’angoisse ou m’alourdit chez lui/elle</span>
+            <textarea class="support-textarea support-textarea--mini" data-person-field="weighs" data-person-index="${index}">${escapeHtml(person.weighs || "")}</textarea>
+          </label>
+          <div class="support-mini-card support-mini-card--gauge">
+            <div class="support-mini-title">Jauge des freins et bénéfices</div>
+            <div class="support-gauge-row">
+              ${[1,2,3,4,5].map((value) => `
+                <label class="support-gauge-option is-gauge-${value}">
+                  <input type="radio" name="gauge-${index}" value="${value}" data-person-field="gauge" data-person-index="${index}" ${String(person.gauge || "") === String(value) ? "checked" : ""}>
+                  <span class="support-gauge-dot"></span>
+                  <span class="support-sr-only">Jauge ${value}</span>
+                </label>
+              `).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function wirePeopleForm(formEl) {
+    const formId = formEl.getAttribute("data-support-form");
+    if (!formId) return;
+
+    renderPeopleList(formEl);
+
+    if (formEl.dataset.supportPeopleBound === "true") {
+      updateSaveStatus(formId);
+      return;
+    }
+
+    formEl.addEventListener("click", (event) => {
+      const addBtn = event.target.closest('[data-support-action="add-person"]');
+      if (addBtn) {
+        const state = getFormState(formId);
+        const people = Array.isArray(state.people) ? [...state.people] : [];
+        people.push(PERSON_TEMPLATE());
+        setFormState(formId, { ...state, people });
+        renderPeopleList(formEl);
+        return;
+      }
+
+      const removeBtn = event.target.closest('[data-support-action="remove-person"]');
+      if (removeBtn) {
+        const index = Number(removeBtn.getAttribute("data-person-index"));
+        const state = getFormState(formId);
+        const people = Array.isArray(state.people) ? [...state.people] : [PERSON_TEMPLATE()];
+        const nextPeople = people.filter((_, i) => i !== index);
+        setFormState(formId, { ...state, people: nextPeople.length ? nextPeople : [PERSON_TEMPLATE()] });
+        renderPeopleList(formEl);
+      }
+    });
+
+    formEl.addEventListener("input", (event) => {
+      const field = event.target?.getAttribute?.("data-person-field");
+      if (!field) return;
+      const index = Number(event.target.getAttribute("data-person-index"));
+      const state = getFormState(formId);
+      const people = Array.isArray(state.people) ? [...state.people] : [PERSON_TEMPLATE()];
+      people[index] = { ...PERSON_TEMPLATE(), ...(people[index] || {}), [field]: event.target.value };
+      setFormState(formId, { ...state, people });
+    });
+
+    formEl.addEventListener("change", (event) => {
+      const field = event.target?.getAttribute?.("data-person-field");
+      if (field !== "gauge") return;
+      const index = Number(event.target.getAttribute("data-person-index"));
+      const state = getFormState(formId);
+      const people = Array.isArray(state.people) ? [...state.people] : [PERSON_TEMPLATE()];
+      people[index] = { ...PERSON_TEMPLATE(), ...(people[index] || {}), gauge: event.target.value };
+      setFormState(formId, { ...state, people });
+    });
+
+    formEl.dataset.supportPeopleBound = "true";
+    updateSaveStatus(formId);
+  }
+
+  function initFoundationDynamicForms() {
+    document.querySelectorAll(".support-dynamic-form[data-support-form]").forEach((formEl) => {
+      if (formEl.querySelector("[data-support-people-list]")) {
+        wirePeopleForm(formEl);
+      } else {
+        wireSimpleForm(formEl);
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    initFoundationDynamicForms();
+
+    const overlayApi = window.FondationSupportOverlay;
+    if (overlayApi && !overlayApi.__foundationFormsPatched) {
+      const originalRender = overlayApi.render.bind(overlayApi);
+      overlayApi.render = function patchedRender() {
+        const result = originalRender();
+        initFoundationDynamicForms();
+        return result;
+      };
+      overlayApi.__foundationFormsPatched = true;
+      initFoundationDynamicForms();
+    }
+  });
+})();

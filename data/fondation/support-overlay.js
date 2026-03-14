@@ -53,7 +53,9 @@
         likesHome: '',
         heavinessHome: '',
         greenery: '',
-        waterMantra: ''
+        waterMantra: '',
+        pastQualitiesDefects:'',
+        grownQualitiesDefects:'',
       },
       entourageQuality: {
         people: [createEmptyPerson()]
