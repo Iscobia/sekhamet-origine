@@ -148,31 +148,16 @@ window.FONDATION_SUPPORT = {
           </div>
 
           <p>
-            Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu
-            penses de ton entourage. Dans les rectangles marqués de 1 à 18 en haut des tableaux, liste
-            l’ensemble des personnes que tu as le plus côtoyé dans ton passé et ton présent (parents,
-            grands-parents, frères et sœurs, enseignant.e.s, ami.e.s…). Tu peux leur attribuer un symbole ou
-            une couleur pour les reconnaître plus facilement dans le tableau, puisqu’ils représentent les
-            colonnes. Dans la colonne la plus à gauche, liste leurs qualités sur la fiche « Qualités » et
-            défauts sur la fiche « Bagages » : dans chaque colonne, fais une marque dans la colonne de
-            toutes les personnes de ton entourage qui sont concernées, et pas juste la personne à qui tu
-            pensais initialement.
+            Une fois que tu as un premier regard sur ton propre parcours, nous allons observer ce que tu penses de ton entourage.
+          </p> 
+          <p> 
+            Je te donne un tableau dynamique pour lister les personnes que tu côtoies actuellement.
+          </p> 
+          <p>  
+            Ce tableau doit t’aider à faire le point la qualité de ton entourage : on est la moyenne des 5 personnes que l’on côtoie le plus. Si leur contact nous alourdit, alors on aura tendance à stagner ou nous éloigner de nous-même. Si au contraire elles nous apaisent ou nous offrent un contact agréable, elles ont de fortes chances de nous accepter tel.les que nous sommes ou tel.le que nous voulons devenir.
           </p>
 
           <p>Prends bien le temps de penser aux qualités et défauts de chacun.</p>
-
-          <p>
-            Une fois la liste complète et les colonnes cochées/marquées, observe les qualités qui peuvent
-            sembler récurrentes dans ton entourage et comment tu te sens par rapport à ces qualités.
-            Souvent, ce sont des choses que l’on aspire à développer. Les défauts, quant à eux, sont
-            souvent des défauts que nous avons nous-mêmes. S’ils nous insupportent chez les autres, c’est
-            qu’ils nous handicapent aussi en nous.
-          </p>
-
-          <p>
-            Préviens-moi quand tu as terminé ce tableau et n’hésite pas à me l’envoyer si tu as envie d’un
-            œil extérieur sur tes réponses.
-          </p>
         </section>
       `
     },
@@ -188,7 +173,7 @@ window.FONDATION_SUPPORT = {
 
           <p>
             Je te propose de lister les personnes qui te sont proches. Famille, collègues, amis d’enfance,
-            amis de hobby… Faisons le points sur ce qu’elles t’apportent et ce qu’elles font peser sur toi.
+            amis de hobby… Faisons le point sur ce qu’elles t’apportent et ce qu’elles font peser sur toi.
           </p>
 
           <div class="support-card support-card--practice support-dynamic-form" data-support-form="entourage-quality">
@@ -202,11 +187,7 @@ window.FONDATION_SUPPORT = {
 
             <div class="support-card support-card--note support-inline-note">
               <p>
-                Si le tableau ne suffit pas, prends une autre feuille ou imprime-le en double ou triple. Le but est
-                de voir en quoi ton entourage te sécurise et te stabilise ou s’il est plus toxique que bénéfique.
-                Prend le temps de réfléchir, prendre du recul et peser les pour et les contre. Il ne s’agit pas de
-                couper les ponts mais surtout de te protéger et créer un terreau fertile pour la belle plante que
-                tu vas devenir !
+                Maintenant que tu as terminé ce tableau, regarde si tu as des traits récurrents chez ces personnes : qu’il s’agisse de défauts ou de qualités, les traits que tu cites peuvent parfois résulter d’un effet miroir de ton propre état d’être actuel. 
               </p>
             </div>
 
