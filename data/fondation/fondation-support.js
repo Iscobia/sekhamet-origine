@@ -1,7 +1,7 @@
 window.FONDATION_SUPPORT = {
   meta: {
     id: "fondation-support",
-    title: "FONDATION",
+    title: "Fondation",
     subtitle: "La base pour évoluer sereinement",
     storageKey: "fondation_support_completed_sections_v1"
   },
