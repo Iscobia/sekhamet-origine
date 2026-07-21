@@ -9,9 +9,15 @@
     <link rel="manifest" href="manifest.json">
     
     <!-- Icônes pour différents appareils -->
-    <link id="app-favicon" rel="icon" href="core/assets/icons/ORIGINE-192.png">
-    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/ORIGINE-192.png">
+    <link id="app-favicon" rel="icon" href="core/assets/icons/EVOLUTION-192.png">
+    <link id="app-apple-touch-icon" rel="apple-touch-icon" href="core/assets/icons/EVOLUTION-192.png">
     
+    <script>
+      (function () {
+        const savedSkin = localStorage.getItem('pwa_skin');
+        document.documentElement.dataset.skin = savedSkin === 'basalte' ? 'basalte' : 'marbre';
+      })();
+    </script>
     <!-- Styles -->
     <link rel="stylesheet" href="core/style.css">
     <link rel="stylesheet" href="theme.css">
@@ -75,10 +81,31 @@
     
 <body>
     <div class="app-container">
+
+        <section class="skin-switcher" aria-label="Apparence de l’application">
+          <div class="skin-switcher-actions" role="group" aria-label="Choisir un fond">
+            <button
+              type="button"
+              class="skin-choice skin-choice--marbre"
+              data-skin-choice="marbre"
+              aria-pressed="false"
+              aria-label="Activer le thème Marbre"
+              title="Thème Marbre"
+            >𖤓</button>
+            <button
+              type="button"
+              class="skin-choice skin-choice--basalte"
+              data-skin-choice="basalte"
+              aria-pressed="false"
+              aria-label="Activer le thème Basalte"
+              title="Thème Basalte"
+            >❨</button>
+          </div>
+        </section>
         <div id="program-selector"></div>
         <!-- En-tête -->
         <header class="app-header">
-              <h1 id="app-main-title">Vers l'Alimentation Consciente</h1>
+              <h1 id="app-main-title" style="margin-top:50px">Mon Défi Quotidien</h1>
               <div class="day-progress">Jour <span id="day-current">1</span>/<span id="day-total">77</span></div>
         </header>
         
@@ -116,25 +143,18 @@
               </button>
             </div>
         </section>
-
-        <!-- Mes notes -->
-        <section class="notes-box" aria-label="Mes notes">
+        <!-- Journal des notes -->
+        <section class="notes-box" aria-labelledby="notes-title">
           <div class="notes-head">
-            <h3>Mes notes 📝</h3>
-            <small id="notes-status" class="notes-status"></small>
+            <h3 id="notes-title">Notes</h3>
+            <small id="notes-status" class="notes-status" aria-live="polite"></small>
           </div>
-        
-          <textarea
-            id="notes-textarea"
-            class="notes-textarea"
-            placeholder="Écris ici ce que tu ressens, ce que tu observes, tes prises de conscience…"
-            rows="6"></textarea>
-        
-          <div class="notes-actions">
-            <button id="clear-notes-btn" class="notes-clear-btn" type="button">
-              🧹 Effacer les notes du jour
-            </button>
-          </div>
+
+          <div
+            id="notes-journal"
+            class="notes-journal"
+            aria-label="Suivi chronologique de mes notes"
+          ></div>
         </section>
 
        
@@ -158,20 +178,18 @@
         <footer class="app-footer">
              <div class="footer-content">
                 <img id="footer-logo"
-                     src="core/assets/icons/ORIGINE-192.png"
-                     alt="ORIGINE" 
+                     src="core/assets/icons/EVOLUTION-192.png"
+                     alt="EVOLUTION" 
                      class="footer-logo">
                 <a id="support-link"
-                   href="https://coaching.sekhamet.com/school/course/origine/"
+                   href="https://coaching.sekhamet.com/school/course/enveloppe/"
                    target="_blank" 
                    rel="noopener noreferrer"
                    class="systeme-btn">
                   📚 J'accède à mon Support
                 </a>
               </div>
-             <img src="core/assets/pictures/arabesque17.webp" 
-                    alt="separator"
-                    class="separator">
+
 
             
             <!-- Section dépannage -->

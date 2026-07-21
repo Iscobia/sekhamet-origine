@@ -38,6 +38,42 @@
   --support-source-border: rgba(0, 0, 0, 0.08);
 }
 
+/*Thème BASALTE */
+
+html[data-skin="basalte"] {
+  --support-bg: rgba(0, 0, 0, 0.78);
+
+  --support-surface: #181719;
+  --support-surface-soft: #242126;
+
+  --support-text: #f3eef5;
+  --support-text-soft: #c9becd;
+
+  --support-border: rgba(156, 79, 194, 0.30);
+  --support-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
+
+  /* Même identité violette, mais plus lumineuse sur fond sombre */
+  --support-accent-start: #a95acb;
+  --support-accent-end: #c186dc;
+  --support-accent-solid: #a85bc8;
+
+  --support-success-bg: rgba(34, 163, 94, 0.18);
+  --support-success-text: #9ee7bb;
+  --support-success-border: rgba(94, 210, 137, 0.30);
+
+  --support-note-bg: rgba(156, 79, 194, 0.12);
+  --support-note-border: rgba(177, 102, 211, 0.30);
+
+  --support-bonus-bg: rgba(245, 158, 11, 0.11);
+  --support-bonus-border: rgba(245, 158, 11, 0.28);
+
+  --support-exercise-bg: rgba(156, 79, 194, 0.10);
+  --support-exercise-border: rgba(177, 102, 211, 0.24);
+
+  --support-source-bg: rgba(255, 255, 255, 0.045);
+  --support-source-border: rgba(255, 255, 255, 0.10);
+}
+
 /* ---------------------------------------------------------
    Couche globale de l’overlay
    - Plein écran
@@ -109,7 +145,7 @@
 }
 
 .support-sidebar-title {
-  font-family: 'Amperzand Sekhamet', serif;
+  font-family: var(--font-titre, 'Cinzel', serif);
   font-size: 1.9rem;
   line-height: 1.05;
   color: var(--support-accent-end);
@@ -319,9 +355,8 @@
 }
 
 .support-content h1,
-.support-content h2,
-.support-content h3 {
-  font-family: 'Amperzand Sekhamet', serif;
+.support-content h2 {
+  font-family: var(--font-titre, 'Cinzel', serif);
   font-weight: normal;
   letter-spacing: 0.2px;
   color: var(--support-accent-end);
@@ -340,6 +375,8 @@
 }
 
 .support-content h3 {
+  font-family: var(--font-texte, 'Lora', serif);
+  font-weight: 700;
   font-size: 1.2rem;
   line-height: 1.2;
   margin-bottom: 12px;
@@ -347,7 +384,7 @@
 
 .support-content p,
 .support-content li {
-  font-family: 'Poiret One', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family: var(--font-texte, 'Lora', Georgia, serif);
   font-size: 1.06rem;
   line-height: 1.72;
   color: var(--support-text);
@@ -433,7 +470,7 @@
 
 .support-card h3 {
   margin-bottom: 10px;
-  margin-top: 25px;
+  /* margin-top: 25px; Supprimé à cause des encadrés de II- 4)*/
 }
 
 /* ---------------------------------------------------------
@@ -878,4 +915,83 @@
   .support-mini-card {
     flex: 1 1 auto;
   }
+}
+
+
+
+/*Thème BASALTE */
+html[data-skin="basalte"] .support-sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(156, 79, 194, 0.13) 0%,
+      rgba(18, 17, 19, 0.96) 100%
+    );
+}
+
+html[data-skin="basalte"] .support-topbar,
+html[data-skin="basalte"] .support-bottombar {
+  background: rgba(24, 23, 25, 0.94);
+}
+
+html[data-skin="basalte"] .support-progress-box,
+html[data-skin="basalte"] .support-card,
+html[data-skin="basalte"] .support-textarea,
+html[data-skin="basalte"] .support-person-card,
+html[data-skin="basalte"] .support-mini-card,
+html[data-skin="basalte"] .support-bonhommes-media,
+html[data-skin="basalte"] .support-icon-btn,
+html[data-skin="basalte"] .support-mobile-panel {
+  background: var(--support-surface-soft);
+  color: var(--support-text);
+}
+
+html[data-skin="basalte"] .support-toc-btn {
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--support-text);
+}
+
+html[data-skin="basalte"] .support-toc-btn.is-active {
+  background:
+    linear-gradient(
+      160deg,
+      rgba(169, 90, 203, 0.24),
+      rgba(91, 43, 115, 0.30)
+    );
+  border-color: rgba(193, 134, 220, 0.42);
+}
+
+html[data-skin="basalte"] .support-card--soft {
+  background: var(--support-surface-soft);
+}
+
+html[data-skin="basalte"] .support-card--note {
+  background: var(--support-note-bg);
+}
+
+html[data-skin="basalte"] .support-card--bonus {
+  background: var(--support-bonus-bg);
+}
+
+html[data-skin="basalte"] .support-card--exercise,
+html[data-skin="basalte"] .support-card--practice {
+  background: var(--support-exercise-bg);
+}
+
+html[data-skin="basalte"] .support-card--source {
+  background: var(--support-source-bg);
+}
+
+html[data-skin="basalte"] .support-content p,
+html[data-skin="basalte"] .support-content li,
+html[data-skin="basalte"] .support-textarea {
+  color: var(--support-text);
+}
+
+html[data-skin="basalte"] .support-textarea {
+  color-scheme: dark;
+}
+
+html[data-skin="basalte"] .support-icon-btn:hover {
+  background: rgba(156, 79, 194, 0.16);
 }

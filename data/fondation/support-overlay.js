@@ -48,16 +48,18 @@
 
   function loadForms() {
     const fallback = {
-      checkinHome: {
+      'checkin-home': {
         feelingsHome: '',
         likesHome: '',
         heavinessHome: '',
         greenery: '',
-        waterMantra: '',
-        pastQualitiesDefects:'',
-        grownQualitiesDefects:'',
+        waterMantra: ''
       },
-      entourageQuality: {
+      'effet-miroir-checkin': {
+        pastQualitiesDefects: '',
+        grownQualitiesDefects: ''
+      },
+      'entourage-quality': {
         people: [createEmptyPerson()]
       }
     };
@@ -65,14 +67,38 @@
     try {
       const raw = localStorage.getItem(FORM_STORAGE_KEY);
       if (!raw) return fallback;
+
       const parsed = JSON.parse(raw);
+      const legacyCheckin = parsed.checkinHome || {};
+      const legacyMirror = parsed.effectMirror || {};
+      const canonicalCheckin = parsed['checkin-home'] || {};
+      const canonicalMirror = parsed['effet-miroir-checkin'] || {};
+
+      const people =
+        parsed['entourage-quality']?.people ??
+        parsed.entourageQuality?.people;
+
       return {
-        checkinHome: {
-          ...fallback.checkinHome,
-          ...(parsed.checkinHome || {})
+        'checkin-home': {
+          ...fallback['checkin-home'],
+          ...legacyCheckin,
+          ...canonicalCheckin
         },
-        entourageQuality: {
-          people: normalizePeople(parsed.entourageQuality?.people)
+        'effet-miroir-checkin': {
+          ...fallback['effet-miroir-checkin'],
+          pastQualitiesDefects:
+            canonicalMirror.pastQualitiesDefects ??
+            legacyMirror.pastQualitiesDefects ??
+            legacyCheckin.pastQualitiesDefects ??
+            '',
+          grownQualitiesDefects:
+            canonicalMirror.grownQualitiesDefects ??
+            legacyMirror.grownQualitiesDefects ??
+            legacyCheckin.grownQualitiesDefects ??
+            ''
+        },
+        'entourage-quality': {
+          people: normalizePeople(people)
         }
       };
     } catch (error) {
@@ -104,8 +130,10 @@
       id: person?.id || `person_${index}_${Math.random().toString(36).slice(2, 8)}`,
       who: person?.who || '',
       brings: person?.brings || '',
-      burdens: person?.burdens || '',
-      gauge: ['1', '2', '3', '4', '5'].includes(String(person?.gauge || '')) ? String(person.gauge) : ''
+      burdens: person?.burdens ?? person?.weighs ?? '',
+      gauge: ['1', '2', '3', '4', '5'].includes(String(person?.gauge || ''))
+        ? String(person.gauge)
+        : ''
     }));
   }
 
@@ -328,42 +356,55 @@
   }
 
   function updateSaveStatus(formName, message = 'Sauvegardé automatiquement') {
-    const node = document.querySelector(`[data-support-save-status="${formName}"]`);
-    if (!node) return;
-    node.textContent = message;
+    document.querySelectorAll(`[data-support-save-status="${formName}"]`).forEach((node) => {
+      node.textContent = message;
+    });
   }
 
-  function initDynamicSection(sectionId) {
-    if (sectionId === 'je-fais-le-point') {
-      initCheckinHomeForm();
-      return;
-    }
+  /*
+   * Initialise les formulaires présents dans le chapitre actuellement affiché.
+   * La logique repose sur data-support-form, et non sur l'id du chapitre :
+   * un futur déplacement d'exercice ne cassera donc plus sa sauvegarde.
+   */
+  function initDynamicSection() {
+    const content = qs('support-content');
+    if (!content) return;
 
-    if (sectionId === 'qualite-entourage') {
-      initEntourageQualityForm();
-    }
+    content.querySelectorAll('.support-dynamic-form[data-support-form]').forEach((formRoot) => {
+      if (formRoot.querySelector('[data-support-people-list]')) {
+        initPeopleForm(formRoot);
+      } else {
+        initSimpleForm(formRoot);
+      }
+    });
   }
 
-  function initCheckinHomeForm() {
-    const root = document.querySelector('[data-support-form="checkin-home"]');
-    if (!root) return;
+  function initSimpleForm(root) {
+    const formName = root.getAttribute('data-support-form');
+    if (!formName || root.dataset.supportBound === 'true') return;
 
     const forms = loadForms();
-    const data = forms.checkinHome || {};
+    const data = forms[formName] || {};
 
     root.querySelectorAll('[data-support-input]').forEach((field) => {
       const key = field.getAttribute('data-support-input');
+      if (!key) return;
+
       field.value = data[key] || '';
 
       field.addEventListener('input', function () {
         const latest = loadForms();
-        latest.checkinHome[key] = field.value;
+        latest[formName] = {
+          ...(latest[formName] || {}),
+          [key]: field.value
+        };
         saveForms(latest);
-        updateSaveStatus('checkin-home');
+        updateSaveStatus(formName);
       });
     });
 
-    updateSaveStatus('checkin-home');
+    root.dataset.supportBound = 'true';
+    updateSaveStatus(formName);
   }
 
   function getGaugeOptions() {
@@ -376,19 +417,26 @@
     ];
   }
 
-  function renderPeopleList() {
-    const container = document.querySelector('[data-support-people-list]');
-    if (!container) return;
+  function renderPeopleList(root) {
+    const formName = root.getAttribute('data-support-form');
+    const container = root.querySelector('[data-support-people-list]');
+    if (!formName || !container) return;
 
     const forms = loadForms();
-    const people = normalizePeople(forms.entourageQuality?.people);
-    forms.entourageQuality.people = people;
+    const people = normalizePeople(forms[formName]?.people);
+    forms[formName] = { ...(forms[formName] || {}), people };
     saveForms(forms);
 
     container.innerHTML = people.map((person, index) => {
       const gaugeOptions = getGaugeOptions().map((option) => `
         <label class="support-gauge-option ${option.className}">
-          <input type="radio" name="support-gauge-${person.id}" value="${option.value}" ${person.gauge === option.value ? 'checked' : ''}>
+          <input
+            type="radio"
+            name="support-gauge-${person.id}"
+            value="${option.value}"
+            data-person-field="gauge"
+            ${person.gauge === option.value ? 'checked' : ''}
+          >
           <span class="support-gauge-dot" aria-hidden="true"></span>
           <span class="support-sr-only">${option.label}</span>
         </label>
@@ -398,7 +446,13 @@
         <article class="support-person-card" data-person-id="${person.id}">
           <div class="support-person-head">
             <h3>Personne ${index + 1}</h3>
-            <button type="button" class="support-remove-person-btn" data-support-action="remove-person" data-person-id="${person.id}" ${people.length <= 1 ? 'disabled' : ''}>Supprimer</button>
+            <button
+              type="button"
+              class="support-remove-person-btn"
+              data-support-action="remove-person"
+              data-person-id="${person.id}"
+              ${people.length <= 1 ? 'disabled' : ''}
+            >Supprimer</button>
           </div>
 
           <div class="support-person-grid">
@@ -419,7 +473,7 @@
 
             <div class="support-mini-card support-mini-card--gauge">
               <span class="support-mini-title">Jauge des freins et bénéfices</span>
-              <div class="support-gauge-row" data-person-field="gauge">${gaugeOptions}</div>
+              <div class="support-gauge-row">${gaugeOptions}</div>
             </div>
           </div>
         </article>
@@ -427,63 +481,79 @@
     }).join('');
   }
 
-  function initEntourageQualityForm() {
-    renderPeopleList();
-    bindPeopleListEvents();
-    updateSaveStatus('entourage-quality');
-  }
+  function initPeopleForm(root) {
+    const formName = root.getAttribute('data-support-form');
+    if (!formName) return;
 
-  function bindPeopleListEvents() {
-    const container = document.querySelector('[data-support-people-list]');
-    if (!container || container.dataset.bound === 'true') return;
-    container.dataset.bound = 'true';
+    renderPeopleList(root);
 
-    container.addEventListener('input', function (event) {
-      const card = event.target.closest('[data-person-id]');
-      if (!card) return;
-      const personId = card.getAttribute('data-person-id');
-      const fieldName = event.target.getAttribute('data-person-field');
-      if (!fieldName) return;
-      updatePerson(personId, fieldName, event.target.value);
-    });
+    if (root.dataset.supportBound === 'true') {
+      updateSaveStatus(formName);
+      return;
+    }
 
-    container.addEventListener('change', function (event) {
-      const card = event.target.closest('[data-person-id]');
-      if (!card) return;
-      const personId = card.getAttribute('data-person-id');
-      if (event.target.matches('input[type="radio"]')) {
-        updatePerson(personId, 'gauge', event.target.value);
+    root.addEventListener('click', function (event) {
+      const addButton = event.target.closest('[data-support-action="add-person"]');
+      if (addButton && root.contains(addButton)) {
+        const forms = loadForms();
+        const people = normalizePeople(forms[formName]?.people);
+        people.push(createEmptyPerson());
+        forms[formName] = { ...(forms[formName] || {}), people };
+        saveForms(forms);
+        renderPeopleList(root);
+        updateSaveStatus(formName);
+        return;
+      }
+
+      const removeButton = event.target.closest('[data-support-action="remove-person"]');
+      if (removeButton && root.contains(removeButton)) {
+        const personId = removeButton.getAttribute('data-person-id');
+        const forms = loadForms();
+        let people = normalizePeople(forms[formName]?.people)
+          .filter((person) => person.id !== personId);
+
+        if (!people.length) people = [createEmptyPerson()];
+
+        forms[formName] = { ...(forms[formName] || {}), people };
+        saveForms(forms);
+        renderPeopleList(root);
+        updateSaveStatus(formName);
       }
     });
+
+    root.addEventListener('input', function (event) {
+      const fieldName = event.target.getAttribute?.('data-person-field');
+      if (!fieldName || fieldName === 'gauge') return;
+
+      const card = event.target.closest('[data-person-id]');
+      if (!card) return;
+
+      updatePerson(formName, card.getAttribute('data-person-id'), fieldName, event.target.value);
+    });
+
+    root.addEventListener('change', function (event) {
+      if (!event.target.matches('input[type="radio"][data-person-field="gauge"]')) return;
+
+      const card = event.target.closest('[data-person-id]');
+      if (!card) return;
+
+      updatePerson(formName, card.getAttribute('data-person-id'), 'gauge', event.target.value);
+    });
+
+    root.dataset.supportBound = 'true';
+    updateSaveStatus(formName);
   }
 
-  function updatePerson(personId, fieldName, value) {
+  function updatePerson(formName, personId, fieldName, value) {
     const forms = loadForms();
-    forms.entourageQuality.people = normalizePeople(forms.entourageQuality.people).map((person) => {
+    const people = normalizePeople(forms[formName]?.people).map((person) => {
       if (person.id !== personId) return person;
       return { ...person, [fieldName]: value };
     });
-    saveForms(forms);
-    updateSaveStatus('entourage-quality');
-  }
 
-  function addPerson() {
-    const forms = loadForms();
-    forms.entourageQuality.people = normalizePeople(forms.entourageQuality.people);
-    forms.entourageQuality.people.push(createEmptyPerson());
+    forms[formName] = { ...(forms[formName] || {}), people };
     saveForms(forms);
-    renderPeopleList();
-    updateSaveStatus('entourage-quality');
-  }
-
-  function removePerson(personId) {
-    const forms = loadForms();
-    let people = normalizePeople(forms.entourageQuality.people).filter((person) => person.id !== personId);
-    if (!people.length) people = [createEmptyPerson()];
-    forms.entourageQuality.people = people;
-    saveForms(forms);
-    renderPeopleList();
-    updateSaveStatus('entourage-quality');
+    updateSaveStatus(formName);
   }
 
   function escapeHtml(value) {
@@ -528,16 +598,6 @@
         return;
       }
 
-      const addBtn = event.target.closest('[data-support-action="add-person"]');
-      if (addBtn) {
-        addPerson();
-        return;
-      }
-
-      const removeBtn = event.target.closest('[data-support-action="remove-person"]');
-      if (removeBtn) {
-        removePerson(removeBtn.getAttribute('data-person-id'));
-      }
     });
 
     document.addEventListener('keydown', function (event) {
